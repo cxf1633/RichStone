@@ -23,10 +23,10 @@
 2,2,2,3,3,3,3,3,3,3,3,3,3,2,2,2,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
-2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+2,2,2,2,2,2,3,2,2,2,2,2,2,2,2,2
 </data>
  </layer>
- <objectgroup name="grids" visible="0">
+ <objectgroup name="grid" visible="0">
   <object id="467" name="1" x="960" y="960" width="80" height="80"/>
   <object id="470" name="2" x="960" y="880" width="80" height="80"/>
   <object id="471" name="3" x="960" y="800" width="80" height="80"/>

@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "8761bfb1-bb36-483e-b0df-4bf2d8fd685d",
+  "uuid": "ad4062bf-888b-4abb-a0bc-ea08af2238e8",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "dikuai": {
+    "playerIcon": {
       "ver": "1.0.3",
-      "uuid": "82f48baf-3e6b-4ed2-85dc-5694ff5590a4",
-      "rawTextureUuid": "8761bfb1-bb36-483e-b0df-4bf2d8fd685d",
+      "uuid": "ad689fe9-d2ad-4f9f-905c-d28325b7d43d",
+      "rawTextureUuid": "ad4062bf-888b-4abb-a0bc-ea08af2238e8",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 281,
-      "height": 160,
-      "rawWidth": 281,
-      "rawHeight": 160,
+      "width": 512,
+      "height": 512,
+      "rawWidth": 512,
+      "rawHeight": 512,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

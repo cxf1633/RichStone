@@ -7,11 +7,13 @@ cc.Class({
             type: cc.Label
         },
         // defaults, set visually when attaching this script to the Canvas
-        text: 'Hello, World!'
+        text: ''
     },
 
     // use this for initialization
     onLoad: function () {
+        this.text = 'Fcuk COCOS';
+        cc.log("sdlkfj ===>>>", this.text);
         this.label.string = this.text;
     },
 
