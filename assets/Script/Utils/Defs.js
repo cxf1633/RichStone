@@ -1,14 +1,12 @@
 //枚举类
-cc.Class({
-    extends: cc.Component,
+// 调用 cc.defs.NameType.Gir
+var Defs = {};
+Defs = {
+    //定义示例
+    // NameType : {
+    //     Boy:0,
+    //     Gir:1,
+    // },
 
-    properties: {
-
-    },
-
-    ctor () {
-
-    },
-
-
-});
+};
+module.exports = Defs;

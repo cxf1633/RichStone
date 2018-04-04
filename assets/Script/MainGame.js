@@ -1,13 +1,16 @@
 //加载JS脚本
 function loadJsFile() {
-    var Defs = require("Utils/Defs")
-    cc.defs = new Defs()
+    cc.defs = require("Utils/Defs")
 
     var MathEx = require("Utils/MathEx")
     cc.mathEx = new MathEx()
 
     var Utils = require("Utils/Utils")
     cc.utils = new Utils() 
+
+    cc.opcode = require("Net/Opcode") 
+    var Http = require("Net/Http")
+    cc.http = new Http()
 }
 
 
@@ -33,7 +36,11 @@ cc.Class({
     },
 
     onStartGameClick(){
-        cc.director.loadScene('battleScene');
+        cc.http.sendRequest(cc.opcode.LOGIN, [1, 3], function(cmd, msg){ 
+            console.log(msg)
+            cc.director.loadScene('battleScene') 
+        })
+        
     }
 
     // update (dt) {},

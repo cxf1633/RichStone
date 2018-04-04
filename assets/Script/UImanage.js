@@ -8,16 +8,6 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
 
-var MoveDir = cc.Enum({
-    None : 0,
-    Up : 1,
-    Down : 2,
-    Left : 3,
-    Right : 4
-});
-
-
-
 cc.Class({
     extends: cc.Component,
 
