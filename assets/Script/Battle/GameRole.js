@@ -10,6 +10,9 @@ var GameRole = cc.Class({
 
     ctor: function () {
         cc.log("GameRole  ctor===>");
-    }
+    },
 
+    printLog: function(){
+        cc.log("GameRole print function");
+    },
 });
