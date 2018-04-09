@@ -2,8 +2,13 @@
 var Opcode = {};
 Opcode = {
     LOGIN : "GuestLogin",
+    CHECK_USER: "CheckUser",
+    GET_SERVER: "GetServer",
+
+
+
     ROUND: "Round",
-    PLAYERMOVE:"PlayerMove",
-    MOVEEND:"MoveEnd",
+    PLAYER_MOVE:"PlayerMove",
+    MOVE_END:"MoveEnd",
 };
 module.exports = Opcode;

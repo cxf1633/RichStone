@@ -5,6 +5,7 @@ var GameRoleBase  = cc.Class({
 
     properties: {
         _roundCount:0,
+        _index:0,
     },
 
     ctor: function () {
@@ -14,17 +15,18 @@ var GameRoleBase  = cc.Class({
         this.node.setPosition(this.orginPos);
     },
 
-    setName:function(name){
-        this._name = name
+    get:function(name){
+        return this[name];
+    },
+    set:function(name, value){
+        this[name] = value;
     },
 
-    setCurrentGid: function(gid){
-        this.currentGid = gid;
-        cc.log("player gid:", gid);
-        var pos = this._getScenePos(gid.x, gid.y);
-        //cc.log("pos +++", pos);
-        this.orginPos = this.node.getPosition();
-        //cc.log("player orgin pos:", this.orginPos);
+    doRound:function(round){
+        this._roundCount = round;
+        var roundString = "第" + this._roundCount + "回合";
+        var data = {roundCount: roundString, roundOwner: this.get("name")};
+        cc.changit.msgMgr.dispatch(cc.changit.opcode.ROUND, data);
     },
 
     setMapInfo: function(tmxMap){
@@ -48,6 +50,7 @@ var GameRoleBase  = cc.Class({
         }
     },
     _moveNextPath:function(nextPath){
+        this.currentGid = nextPath;
         var newPos = this._getScenePos(nextPath.x, nextPath.y);   
         var moveAction = cc.moveTo(1, newPos);
         var callback = cc.callFunc(this._hasNextPath, this);
@@ -66,19 +69,17 @@ var GameRoleBase  = cc.Class({
     },
     _doStopEvent: function(){
         cc.log("_doStopEvent");
-        cc.changit.msgMgr.dispatch(cc.changit.opcode.MOVEEND, data);
+        cc.changit.msgMgr.dispatch(cc.changit.opcode.MOVE_END, "_doStopEvent");
     },
 
     // cellX和cellY是tilemap中的单元格。
     _getScenePos: function(cellX, cellY){
         // cc.log("cellX =", cellX);
         // cc.log("cellY =", cellY);
-
         var posX = this.mapPixWidth / 2 + (cellX - cellY) * this.cellWidth / 2;
         var posY = this.mapPixHeight - (cellX + cellY) * this.cellHeight / 2;
         // cc.log("posX =", posX);
         // cc.log("posY =", posY);
-
         return cc.p(posX, posY-40);
     },
 });

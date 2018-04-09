@@ -1,15 +1,22 @@
-var Url = "http://192.168.199.114:80"
+var Url = "http://192.168.199.156:80"
+
+//登录服务器ip
+var authUrl = "192.168.199.156:80";
+
+//逻辑服务器ip
+var logicUrl = "192.168.199.156:80";
+
+//战斗服务器ip
+var battleUrl = "192.168.199.156:80";
 
 var Http = cc.Class({
-    extends: cc.Component, 
-
     sendRequest(cmd, data, callBack){
         var nums = arguments.length
         if (nums == 2){
-            data = ""
+            data = []
         }
         var xhr = cc.loader.getXMLHttpRequest()
-        var requestURL = Url + "/auth" 
+        var requestURL = Url + "/rpc" 
         xhr.open("POST", requestURL)
         xhr.setRequestHeader("Content-type","application/json")
         
@@ -50,5 +57,45 @@ var Http = cc.Class({
         return jsonStr
     },
 
+    //请求http数据
+    sendHttpRequest: function (command, onErrCallBack, onCallBack, target) {
+        var xhr = cc.loader.getXMLHttpRequest();
 
+        cc.log("Send Http Url:" +"http://"+authUrl+"/rpc");
+        xhr.open("POST", "http://"+authUrl + "/rpc");
+        xhr.setRequestHeader("Content-type","application/json");
+
+
+        var data = Array.prototype.slice.call(arguments, 4);
+        var jsonData = {
+            func_name:command,
+            params:data
+        }
+        var sendstr = JSON.stringify(jsonData);
+        cc.log("Send Http data: ", sendstr);
+        xhr.send(sendstr);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                cc.log("Receive Http data: ", response);
+                if (onCallBack) {
+                    onCallBack.call(target, response);
+                }
+            }
+            else if(xhr.readyState ==4 && xhr.status != 200){
+                xhr.abort();    
+                if(onErrCallBack){
+                    onErrCallBack();
+                }
+            }
+        }
+        xhr.timeout = 5000;
+        xhr.ontimeout = function () {
+            // if(onErrCallBack){
+            //     onErrCallBack();
+            // }
+        };
+        return xhr;
+    },
 });

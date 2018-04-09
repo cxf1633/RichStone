@@ -1,7 +1,5 @@
 //战斗逻辑
 
-var roundLogic = require("Battle/RoundLogic")
-
 cc.Class({
     extends: cc.Component,
 
@@ -16,6 +14,10 @@ cc.Class({
     },
     //2，onLoad之后调用
     start: function() {
+        
+        cc.changit.msgMgr.register(cc.changit.opcode.PLAYER_MOVE, this._playerMove, this);
+        cc.changit.msgMgr.register(cc.changit.opcode.MOVE_END, this._playerMoveEnd, this);
+
         this.mapNode = this.node.getChildByName("map");
         var tmxMap = this.mapNode.getComponent('cc.TiledMap');
         // var self = this;
@@ -27,90 +29,109 @@ cc.Class({
         //     self.mapNode.addChild(self.player1);
         // });
 
+        var gid = {x:12, y:12};
         this.player1 = this.mapNode.getChildByName("player1");
         this.player1.getComponent("GameRole").setMapInfo(tmxMap);
-        this.player1.getComponent("GameRole").setName("player1");
-        
-        var gid = {x:12, y:12};
-        this.player1.getComponent("GameRole").setCurrentGid(gid);
+        this.player1.getComponent("GameRole").set("currentGid", gid);
+        this.player1.getComponent("GameRole").set("name", "player1");
+
 
         this.player2 = this.mapNode.getChildByName("player2");
         this.player2.getComponent("GameRole").setMapInfo(tmxMap);
-        var gid = {x:12, y:12};
-        this.player2.getComponent("GameRole").setCurrentGid(gid);
-        this.player1.getComponent("GameRole").setName("player2");
+        this.player2.getComponent("GameRole").set("currentGid", gid);
+        this.player2.getComponent("GameRole").set("name", "player2");
 
         this._playerList = new Array();
         this._playerList.push(this.player1);
         this._playerList.push(this.player2);
 
+        //随机一个先开始
         var firstMan = cc.changit.mathEx.getRandom(1,2);
-        var name =  this["player"+ firstMan]._name;
-        cc.log("name==>>", name);
-        this._currentPlayer = this["player"+ firstMan];
+        if(firstMan == 1){
+            this.player1.getComponent("GameRole").set("index", 1);
+            this.player2.getComponent("GameRole").set("index", 2);
+        }
+        else{
+            this.player1.getComponent("GameRole").set("index", 2);
+            this.player2.getComponent("GameRole").set("index", 1);
+        }
+        this._roundLoop();
 
-        cc.log("gid222:", this._currentPlayer.getComponent("GameRole").currentGid);
-        // this._roundLogic = new roundLogic();
-        // this._roundLoop();
+    },
+    //回合循环
+    _roundLoop:function(){
+        this._roundCount += 1;
+        cc.log("回合：", this._roundCount);
 
-        cc.changit.msgMgr.register(cc.changit.opcode.PLAYERMOVE, this._playerMove, this);
-        cc.changit.msgMgr.register(cc.changit.opcode.MOVEEND, this._playerMoveEnd, this);
-        
-        this._startRound();
+        var player = null;
+        for (var i = 0; i < this._playerList.length; i++) {
+            var index = this._playerList[i].getComponent("GameRole").get("index");
+            cc.log("index", index);
+            if(index == 1){
+                player = this._playerList[i];
+                break;
+            }
+        }
+        if(player != null){
+            this._currentPlayer = player;
+            this._currentPlayer.getComponent("GameRole").doRound(this._roundCount);
+        }    
     },
-    // _roundLoop:function(){
-    //     this._roundCount += 2;
-    //     cc.log("this._roundCount ==", this._roundCount);
-    //     this._roundLogic.resetRound(this._roundCount, this._currentPlayer);
-    // },
-    _startRound:function(){
-        this._roundCount += 2;
-        var roundString = "第" + this._roundCount + "回合";
-        var data = {roundCount:roundString, roundOwner:this._currentPlayer._name};
-        cc.changit.msgMgr.dispatch(cc.changit.opcode.ROUND, data);
+
+    _playerMoveEnd:function(){
+        var player = this._findNextPlayer();
+        if(player != null){
+            this._currentPlayer = player;
+            player.getComponent("GameRole").doRound(this._roundCount);
+        }
+        else{
+            this._roundLoop();
+        }
     },
-   
+    _findNextPlayer:function(){
+        var player = null;
+        for (var i = 0; i < this._playerList.length; i++) {
+            var roundCound = this._playerList[i].getComponent("GameRole")._roundCount;
+            cc.log("_playerMoveEnd roundCound ==", roundCound);
+            if(roundCound < this._roundCount){
+                player = this._playerList[i];
+                break;
+            }
+        }
+        return player;
+    },
     _playerMove:function(data){
         var paths = this._getTestPath();
-        this.player1.getComponent("GameRole").moveByPath(paths);
+        this._currentPlayer.getComponent("GameRole").moveByPath(paths);
     },
     _getTestPath: function(){
-        cc.log("gid:", this._currentPlayer.getComponent("GameRole").currentGid);
+        var num = cc.changit.mathEx.getRandom(1,3);
+        var x =  this._currentPlayer.getComponent("GameRole").get("currentGid").x;
+        var y =  this._currentPlayer.getComponent("GameRole").get("currentGid").y;
 
-        var num = cc.changit.mathEx.getRandom(1,6);
-        cc.log("num:", num);
-
-        var x =  this._currentPlayer.getComponent("GameRole").currentGid.x;
-        var y =  this._currentPlayer.getComponent("GameRole").currentGid.y;
         var paths = new Array();
         for (var i = 0; i < num; i++) {
             var tx = x;
             var ty = y -= 1;
-            cc.log("ty==>", ty);
             paths.push( {x:tx, y:ty} );
         }
         return paths;
     },
 
-    _playerMoveEnd:function(){
-        for (var i = 0; i < this._playerList.length; i++) {
-            var player = this._playerList[i];
-        }
-    },
     // called every frame
     update: function (dt) {
         this._fixPlayerInCenter();
     },
+
     _fixPlayerInCenter: function(){
-        var playerPos = this.player1.getPosition(); 
+        var playerPos = this._currentPlayer.getPosition(); 
         var mapPos = cc.p(0 - playerPos.x, 0 - playerPos.y);
         this.mapNode.setPosition(mapPos);
     },
 
     onDestroy:function(){
         cc.log("battleLogic onDestroy");
-
-        cc.changit.msgMgr.remove(cc.changit.opcode.PLAYERMOVE, this._playerMove);
-        cc.changit.msgMgr.remove(cc.changit.opcode.MOVEEND, this._playerMoveEnd);
+        cc.changit.msgMgr.remove(cc.changit.opcode.PLAYER_MOVE, this._playerMove);
+        cc.changit.msgMgr.remove(cc.changit.opcode.MOVE_END, this._playerMoveEnd);
     },
 });

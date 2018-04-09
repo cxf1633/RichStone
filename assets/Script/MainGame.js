@@ -30,13 +30,8 @@ cc.Class({
         loadJsFile();
         this._startBtn = this.node.getChildByName("Start");
         cc.changit.utils.addClickEvent(this._startBtn, this.node, "MainGame", "onStartGameClick");
-
-        // cc.changit.msgMgr.register("test", this.doTest, this);
     },
 
-    doTest2:function(){
-        cc.log("doTest2===>>>>");
-    },
     start () {
         
         console.log('@=================Game Start================@');
@@ -47,14 +42,10 @@ cc.Class({
         //     console.log(msg)
         //     cc.director.loadScene('battleScene') 
         // })
-        cc.director.loadScene('battleScene') 
-    },
 
+        cc.director.loadScene('login')
+    },
     onDestroy:function(){
         cc.log("MainGame onDestroy");
-
-        // cc.changit.msgMgr.remove("test", this.doTest2);
     },
-
-    // update (dt) {},
 });

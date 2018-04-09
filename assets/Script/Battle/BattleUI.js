@@ -42,9 +42,7 @@ cc.Class({
     },
     onClick1:function(){
         cc.log("onClick1==>>");
-
-        cc.changit.msgMgr.dispatch(cc.changit.opcode.PLAYERMOVE, "ff11");
-
+        cc.changit.msgMgr.dispatch(cc.changit.opcode.PLAYER_MOVE, "ff11");
         //cc.changit.msgMgr.register("test", this.doTest2, this);
     },
     onClick2:function(){
@@ -65,7 +63,6 @@ cc.Class({
 
     onDestroy:function(){
         cc.log("battleui onDestroy");
-
         cc.changit.msgMgr.remove(cc.changit.opcode.ROUND, this.roundChange);
     },
 });

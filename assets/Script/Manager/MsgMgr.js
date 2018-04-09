@@ -15,6 +15,7 @@ var MsgMgr = {
     dispatch (cmd, param) {
         var array = this._msgMap[cmd]
         if (array === undefined) return
+        
         for (var i = 0; i < array.length; i++) {
             var element = array[i]
             if (element && element.callback != undefined) 
@@ -30,8 +31,8 @@ var MsgMgr = {
         for (var i = 0; i < array.length; i++) {
             var element = array[i]
             if (element && element.callback === callback) {
-                array[i] = undefined;
-              
+                array[i] = undefined
+                array.splice(i, 1)
                 break
             }
         }
