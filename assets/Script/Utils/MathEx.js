@@ -1,8 +1,6 @@
-cc.Class({
-    extends: cc.Component,
+//数学方法
 
-    properties: {},
-
+var MathEx = {
     //获取[min, max]一个随机数
     getRandom(min, max){
         switch(arguments.length){ 
@@ -17,4 +15,6 @@ cc.Class({
                 break; 
         } 
     }
-});
+};
+
+module.exports = MathEx

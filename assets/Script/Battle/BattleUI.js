@@ -29,11 +29,11 @@ cc.Class({
     onLoad: function() {
 
 
-        cc.changit.utils.addClickEvent(this.moveBtn1, this.node, "BattleUI", "onClick1");
-        cc.changit.utils.addClickEvent(this.moveBtn2, this.node, "BattleUI", "onClick2");
-        cc.changit.utils.addClickEvent(this.moveBtn3, this.node, "BattleUI", "onClick3");
+        cc.changit.Utils.addClickEvent(this.moveBtn1, this.node, "BattleUI", "onClick1");
+        cc.changit.Utils.addClickEvent(this.moveBtn2, this.node, "BattleUI", "onClick2");
+        cc.changit.Utils.addClickEvent(this.moveBtn3, this.node, "BattleUI", "onClick3");
 
-        cc.changit.msgMgr.register(cc.changit.opcode.ROUND, this.roundChange, this);
+        cc.changit.MsgMgr.register(cc.changit.Opcode.ROUND, this.roundChange, this);
     },
 
     roundChange:function(data){
@@ -42,7 +42,7 @@ cc.Class({
     },
     onClick1:function(){
         cc.log("onClick1==>>");
-        cc.changit.msgMgr.dispatch(cc.changit.opcode.PLAYER_MOVE, "ff11");
+        cc.changit.MsgMgr.dispatch(cc.changit.Opcode.PLAYER_MOVE, "ff11");
         //cc.changit.msgMgr.register("test", this.doTest2, this);
     },
     onClick2:function(){
@@ -63,6 +63,6 @@ cc.Class({
 
     onDestroy:function(){
         cc.log("battleui onDestroy");
-        cc.changit.msgMgr.remove(cc.changit.opcode.ROUND, this.roundChange);
+        cc.changit.MsgMgr.remove(cc.changit.Opcode.ROUND, this.roundChange);
     },
 });

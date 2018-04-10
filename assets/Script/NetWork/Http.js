@@ -9,7 +9,8 @@ var logicUrl = "192.168.199.156:80";
 //战斗服务器ip
 var battleUrl = "192.168.199.156:80";
 
-var Http = cc.Class({
+var Http = {
+
     sendRequest(cmd, data, callBack){
         var nums = arguments.length
         if (nums == 2){
@@ -98,4 +99,6 @@ var Http = cc.Class({
         };
         return xhr;
     },
-});
+};
+
+module.exports = Http

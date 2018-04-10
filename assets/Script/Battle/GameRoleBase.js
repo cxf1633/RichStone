@@ -26,7 +26,7 @@ var GameRoleBase  = cc.Class({
         this._roundCount = round;
         var roundString = "第" + this._roundCount + "回合";
         var data = {roundCount: roundString, roundOwner: this.get("name")};
-        cc.changit.msgMgr.dispatch(cc.changit.opcode.ROUND, data);
+        cc.changit.MsgMgr.dispatch(cc.changit.Opcode.ROUND, data);
     },
 
     setMapInfo: function(tmxMap){
@@ -69,7 +69,7 @@ var GameRoleBase  = cc.Class({
     },
     _doStopEvent: function(){
         cc.log("_doStopEvent");
-        cc.changit.msgMgr.dispatch(cc.changit.opcode.MOVE_END, "_doStopEvent");
+        cc.changit.MsgMgr.dispatch(cc.changit.Opcode.MOVE_END, "_doStopEvent");
     },
 
     // cellX和cellY是tilemap中的单元格。

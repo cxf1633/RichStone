@@ -1,18 +1,20 @@
 //加载JS脚本
 function loadJsFile() {
     cc.changit = {};
-    cc.changit.defs = require("Utils/Defs")
 
-    var MathEx = require("Utils/MathEx")
-    cc.changit.mathEx = new MathEx()
-
-    cc.changit.utils = require("Utils/Utils")
-
-    cc.changit.opcode = require("NetWork/Opcode") 
-    var Http = require("NetWork/Http")
-    cc.changit.http = new Http()
-
-    cc.changit.msgMgr = require("Manager/MsgMgr")
+    var jsFiles = require("JsFiles");
+    for (var i in jsFiles) {
+        var JsFile = jsFiles[i];
+        cc.log("require JsFile:", JsFile);
+        var md = require(JsFile);
+        if(typeof md == "object"){
+            cc.changit[JsFile] = md;
+        }
+        //Class
+        else if(typeof md == "function"){
+            cc.changit[JsFile] = new md();
+        } 
+    }
 }
 
 
@@ -29,21 +31,19 @@ cc.Class({
     onLoad () {
         loadJsFile();
         this._startBtn = this.node.getChildByName("Start");
-        cc.changit.utils.addClickEvent(this._startBtn, this.node, "MainGame", "onStartGameClick");
+
+        cc.changit.Utils.addClickEvent(this._startBtn, this.node, "MainGame", "onStartGameClick");
+
+        cc.changit.ConfigData.init();
+
     },
 
     start () {
-        
         console.log('@=================Game Start================@');
     },
 
     onStartGameClick(){
-        // cc.changit.http.sendRequest(cc.changit.opcode.LOGIN, [1, 3], function(cmd, msg){ 
-        //     console.log(msg)
-        //     cc.director.loadScene('battleScene') 
-        // })
-
-        cc.director.loadScene('login')
+        cc.director.loadScene('login');
     },
     onDestroy:function(){
         cc.log("MainGame onDestroy");

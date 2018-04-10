@@ -7,16 +7,17 @@ cc.Class({
         _currentPlayer:null,
         _playerList:null,
         _roundCount:0,
+        _bIsSwitchPlayer: false,
     },
     //1，第一个调用
     onLoad: function() {
-    
+
     },
     //2，onLoad之后调用
     start: function() {
         
-        cc.changit.msgMgr.register(cc.changit.opcode.PLAYER_MOVE, this._playerMove, this);
-        cc.changit.msgMgr.register(cc.changit.opcode.MOVE_END, this._playerMoveEnd, this);
+        cc.changit.MsgMgr.register(cc.changit.Opcode.PLAYER_MOVE, this._playerMove, this);
+        cc.changit.MsgMgr.register(cc.changit.Opcode.MOVE_END, this._playerMoveEnd, this);
 
         this.mapNode = this.node.getChildByName("map");
         var tmxMap = this.mapNode.getComponent('cc.TiledMap');
@@ -46,7 +47,7 @@ cc.Class({
         this._playerList.push(this.player2);
 
         //随机一个先开始
-        var firstMan = cc.changit.mathEx.getRandom(1,2);
+        var firstMan = cc.changit.MathEx.getRandom(1,2);
         if(firstMan == 1){
             this.player1.getComponent("GameRole").set("index", 1);
             this.player2.getComponent("GameRole").set("index", 2);
@@ -73,7 +74,12 @@ cc.Class({
             }
         }
         if(player != null){
-            this._currentPlayer = player;
+            if(this._roundCount > 1){
+                this._switchPlayerConversionPerspective(player);
+            }
+            else{
+                this._currentPlayer = player;
+            }
             this._currentPlayer.getComponent("GameRole").doRound(this._roundCount);
         }    
     },
@@ -81,7 +87,7 @@ cc.Class({
     _playerMoveEnd:function(){
         var player = this._findNextPlayer();
         if(player != null){
-            this._currentPlayer = player;
+            this._switchPlayerConversionPerspective(player);
             player.getComponent("GameRole").doRound(this._roundCount);
         }
         else{
@@ -105,7 +111,7 @@ cc.Class({
         this._currentPlayer.getComponent("GameRole").moveByPath(paths);
     },
     _getTestPath: function(){
-        var num = cc.changit.mathEx.getRandom(1,3);
+        var num = cc.changit.MathEx.getRandom(1,3);
         var x =  this._currentPlayer.getComponent("GameRole").get("currentGid").x;
         var y =  this._currentPlayer.getComponent("GameRole").get("currentGid").y;
 
@@ -120,6 +126,7 @@ cc.Class({
 
     // called every frame
     update: function (dt) {
+        if (this._bIsSwitchPlayer) return;
         this._fixPlayerInCenter();
     },
 
@@ -129,9 +136,23 @@ cc.Class({
         this.mapNode.setPosition(mapPos);
     },
 
+    _switchPlayerConversionPerspective: function(player) {
+        this._bIsSwitchPlayer = true;
+        this._currentPlayer = player;
+        var playerPos = this._currentPlayer.getPosition(); 
+        var mapPos = cc.p(0 - playerPos.x, 0 - playerPos.y);
+
+        var moveAction = cc.moveTo(0.3, mapPos);
+        var callback = cc.callFunc(function(){
+            this._bIsSwitchPlayer = false;
+        }, this);
+
+        this.mapNode.runAction(cc.sequence(moveAction, callback));
+    },
+
     onDestroy:function(){
         cc.log("battleLogic onDestroy");
-        cc.changit.msgMgr.remove(cc.changit.opcode.PLAYER_MOVE, this._playerMove);
-        cc.changit.msgMgr.remove(cc.changit.opcode.MOVE_END, this._playerMoveEnd);
+        cc.changit.MsgMgr.remove(cc.changit.Opcode.PLAYER_MOVE, this._playerMove);
+        cc.changit.MsgMgr.remove(cc.changit.Opcode.MOVE_END, this._playerMoveEnd);
     },
 });
