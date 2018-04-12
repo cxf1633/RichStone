@@ -14,9 +14,12 @@ var JsFiles = [
     "UIManager", 
     "Login", 
     "SelectServerList", 
-
-
+    "MainUI", 
+<<<<<<< HEAD
+    "Http", 
+=======
     "HttpMgr", 
+>>>>>>> 修改网络和流程
     "Opcode", 
     "SocketMgr", 
     "Defs", 

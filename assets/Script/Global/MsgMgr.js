@@ -5,9 +5,8 @@ var MsgMgr = {
     //注册监听消息
     register (cmd, callback, target) {
         if (this._msgMap[cmd] === undefined) {
-            this._msgMap[cmd] = []
+            this._msgMap[cmd] = [];
         }
-
         this._msgMap[cmd].push({ callback: callback, target: target })
     },
 
@@ -41,6 +40,24 @@ var MsgMgr = {
     //移除消息类型为cmd的所有监听 慎用！！！
     removeByCmd (cmd) {
         this._msgMap[cmd] = undefined
+    },
+
+    //打印监听消息的回调数量
+    printMsgCount(cmd){
+        if(!cmd){
+            for(var key in this._msgMap){
+                cc.log("cmd :"+ key + " num: " + this._msgMap[key].length);
+            }
+        }
+        else{
+            var array = this._msgMap[cmd]
+            if (array === undefined){
+                cc.log("cmd :"+ cmd + " num: 0");
+            }
+            else{
+                cc.log("cmd :"+ cmd + " num: " + array.length);
+            }
+        }
     },
 }
 

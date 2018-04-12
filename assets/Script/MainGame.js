@@ -26,16 +26,13 @@ cc.Class({
         _startBtn:null,
     },
 
-    // LIFE-CYCLE CALLBACKS:
-
     onLoad () {
         loadJsFile();
         this._startBtn = this.node.getChildByName("Start");
 
         cc.changit.Utils.addClickEvent(this._startBtn, this.node, "MainGame", "onStartGameClick");
 
-        cc.changit.ConfigData.init();
-
+        //cc.changit.ConfigData.init();
     },
 
     start () {

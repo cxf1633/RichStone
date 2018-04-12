@@ -77,6 +77,7 @@ var Login = cc.Class({
             //
             cc.changit.HttpMgr.sendAuthRequest(cc.changit.Opcode.CHECK_USER, this.userInputLabel.string, this.passwordInputLabel.string);
         }
+<<<<<<< HEAD
         else {
             var jiaoben = null;
             cc.changit.UIManager.loadUI("prefab/CommonPopout", this.node, function(go) {
@@ -84,7 +85,10 @@ var Login = cc.Class({
                 jiaoben.show("错误", "用户名与密码不能为空"  , null, null);
             }, 10);
         }
-    	cc.changit.MsgMgr.printMsgCount();
+=======
+
+        cc.changit.MsgMgr.printMsgCount();
+>>>>>>> 修改网络和流程
     },
 
     getServer: function(data) {

@@ -43,6 +43,9 @@ cc.Class({
     onClick1:function(){
         cc.log("onClick1==>>");
         cc.changit.MsgMgr.dispatch(cc.changit.Opcode.PLAYER_MOVE, "ff11");
+
+
+        cc.changit.SocketMgr.sendPackage("JoinRoom", 123, 456, "789");
         //cc.changit.msgMgr.register("test", this.doTest2, this);
     },
     onClick2:function(){
