@@ -64,6 +64,7 @@ var MainUI = cc.Class({
     _startMatchBattle(){
         this._isStartMatch = true;
         var self =  this;
+        this._matchTime = 0
         this.callback = function() {
             cc.changit.HttpMgr.sendLogicRequest(cc.changit.Opcode.RETRIEVEMATCHRESULT);
             self._matchTime += 1;

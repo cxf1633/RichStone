@@ -46,7 +46,7 @@ var SocketMgr = cc.Class({
         var zipstr = event.data;
         cc.log("WebSocket接收数据:\n" + zipstr);
         cc.changit.SocketMgr._cachebuffs = [cc.changit.SocketMgr._cachebuffs,zipstr].join("");
-        cc.changit.SocketMgr.generateCommand();
+        cc.changit.SocketMgr.generateCommand(zipstr);
     },
     nettyDidDisConnected:function(event){
         cc.log("已断开与服务器:["+ cc.changit.SocketMgr._svr.serverip +"]的连接:" + event);
