@@ -48,19 +48,20 @@ var HttpMgr = {
                 cc.log("Http 收到数据<<<:\n", xhr.responseText);
                 try {
                     var ret = JSON.parse(xhr.responseText);
+                    if (servertype == serverType.Logic){
+                        //更新token
+                        var newToken = xhr.getResponseHeader("token")
+                        // cc.log("newToken==>", newToken);
+                        // cc.log("cc.changit.Http.token==>", cc.changit.HttpMgr.token);
+                        cc.changit.HttpMgr.token = newToken == null ? cc.changit.HttpMgr.token : newToken;
+                    }
                     if (ret.error != null){
                         //console.error(ret.error.code) //TODO 错误处理
                         cc.changit.HttpMgr.onErrCallBack(ret.error);
                     }
                     else {
-                        if (servertype == serverType.Logic){
-                            var newToken = xhr.getResponseHeader("token")
-                            cc.log("newToken==>", newToken);
-                            cc.log("cc.changit.Http.token==>", cc.changit.HttpMgr.token);
-                            cc.changit.HttpMgr.token = newToken == null ? cc.changit.HttpMgr.token : newToken;
-                        }
                         cc.changit.MsgMgr.dispatch(ret.func_name, ret.data);
-                    }                        
+                    }
                 } catch (e) {
                     console.log("err:" + e);
                 }

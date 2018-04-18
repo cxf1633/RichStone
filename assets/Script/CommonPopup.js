@@ -22,6 +22,11 @@ cc.Class({
             type: cc.Button,
         },
 
+        popupFrame: {
+            default: null,
+            type: cc.Node,
+        },
+
         _onConfirmCall: null,
         _onCancelCall: null,
     },
@@ -49,7 +54,15 @@ cc.Class({
                 this._onCancelCall();
             }
         }
-        this.onEnd();
+        this.closeFrame();
+    },
+
+    closeFrame: function() {
+        var scaleAction = cc.scaleBy(0.2, 0);
+        var callback = cc.callFunc(function(){
+            this.onEnd();
+        }, this);
+        this.popupFrame.runAction(cc.sequence(scaleAction, callback));
     },
 
     onEnd: function() {
@@ -60,5 +73,6 @@ cc.Class({
 
     onDestroy() {
         cc.changit.UIManager.destroyNode("CommonPopup");
+        cc.changit.PopupManager.updatePopUp();
     }
 });

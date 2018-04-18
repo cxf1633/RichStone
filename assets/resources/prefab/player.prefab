@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "player1",
+    "_name": "player2",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -22,10 +22,13 @@
       },
       {
         "__id__": 3
+      },
+      {
+        "__id__": 4
       }
     ],
     "_prefab": {
-      "__id__": 4
+      "__id__": 5
     },
     "_id": "",
     "_opacity": 255,
@@ -40,16 +43,16 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.5
+      "y": 0
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 30,
-      "height": 30
+      "width": 56,
+      "height": 79
     },
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 1,
+    "_scaleX": -1,
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
@@ -72,10 +75,10 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "0dad791e-39a5-4dec-b356-8933755402c3"
+      "__uuid__": "85994ca9-65af-4806-a129-e5211546d6cb"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -87,7 +90,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "7c1259c3-948d-449f-b414-70f0163bfddf"
+    }
   },
   {
     "__type__": "888ceZBwkVMV704DL4rwhKD",
@@ -96,7 +101,31 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": true
+    "_enabled": true,
+    "_roundCount": 0,
+    "_index": 0,
+    "_anim": null
+  },
+  {
+    "__type__": "cc.Animation",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "_defaultClip": {
+      "__uuid__": "de4033e9-7299-41f3-8bde-ff7e1889dd8d"
+    },
+    "_clips": [
+      {
+        "__uuid__": "de4033e9-7299-41f3-8bde-ff7e1889dd8d"
+      },
+      {
+        "__uuid__": "d3e3b395-0171-4972-a54f-a5b08d7f396c"
+      }
+    ],
+    "playOnLoad": false
   },
   {
     "__type__": "cc.PrefabInfo",

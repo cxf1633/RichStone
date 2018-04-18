@@ -45,8 +45,6 @@ var Login = cc.Class({
             default: null,
             type: cc.Prefab,
         },
-
-        _uiPanel: null,
     },
 
     onLoad () {
@@ -80,11 +78,7 @@ var Login = cc.Class({
             cc.changit.HttpMgr.sendAuthRequest(cc.changit.Opcode.CHECK_USER, this.userInputLabel.string, this.passwordInputLabel.string);
         }
         else {
-            var self = this;
-            cc.changit.UIManager.getNode("prefab/CommonPopup", this.node, function(go) {
-                self._uiPanel = go.getComponent("CommonPopup");
-                self._uiPanel.show("错误", "用户名与密码不能为空", null, null);
-            }, 10);
+            cc.changit.PopupManager.showPopup("错误", "用户名与密码不能为空", null, null);
         }
     	cc.changit.MsgMgr.printMsgCount();
     },

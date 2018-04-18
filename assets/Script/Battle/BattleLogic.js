@@ -1,144 +1,196 @@
 //战斗逻辑
 
-cc.Class({
+var BattleLogic = cc.Class({
     extends: cc.Component,
 
     properties: {
         _currentPlayer:null,
-        _playerList:null,
+        _playerObjList:null,
         _roundCount:0,
         _bIsSwitchPlayer: false,
+        _bBattleStart:false,
+        _bTurnStart:false,
+
+        
+        _netCmdList:null,   //网络队列
+        _bInCmd:false,      //是否在命令中
     },
     //1，第一个调用
-    onLoad: function() {
-
+    onLoad() {
+        //cc.log("battle logc onLoad===>");
     },
     //2，onLoad之后调用
-    start: function() {
-        
-        cc.changit.MsgMgr.register(cc.changit.Opcode.PLAYER_MOVE, this._playerMove, this);
-        cc.changit.MsgMgr.register(cc.changit.Opcode.MOVE_END, this._playerMoveEnd, this);
+    start() {
+        //网络全部压入队列
+        cc.changit.MsgMgr.register(cc.changit.Opcode.BATTLE_START, this.OnPushNetCmd, this);
+        cc.changit.MsgMgr.register(cc.changit.Opcode.MOVE, this.OnPushNetCmd, this);
+        cc.changit.MsgMgr.register(cc.changit.Opcode.NEW_TURN, this.OnPushNetCmd, this);
+        cc.changit.MsgMgr.register(cc.changit.Opcode.NEXT_ACTOR, this.OnPushNetCmd, this);
+        cc.changit.MsgMgr.register(cc.changit.Opcode.DICE, this.OnPushNetCmd, this);
 
+        //自定义消息立即执行
+        cc.changit.MsgMgr.register(cc.changit.Opcode.MOVE_END, this.OnMoveEnd, this);
+
+        //cc.changit.MsgMgr.register(cc.changit.Opcode.TEST, this.OnTest, this);
+
+        //初始化地图信息
         this.mapNode = this.node.getChildByName("map");
         var tmxMap = this.mapNode.getComponent('cc.TiledMap');
-        // var self = this;
-        // //加载 Prefab
-        // cc.loader.loadRes("prefab/player", function (err, prefab) {
-        //     self.player1 = cc.instantiate(prefab);
-        //     //player1.setPosition(self._getScenePos(6, 15));
-        //     self.player1.setPosition(cc.p(0, 0));
-        //     self.mapNode.addChild(self.player1);
-        // });
+        cc.changit.MapMgr.init(tmxMap);
 
-        var gid = {x:12, y:12};
+        //角色
+        this._playerObjList = new Array();
+        this.player0 = this.mapNode.getChildByName("player0");
         this.player1 = this.mapNode.getChildByName("player1");
-        this.player1.getComponent("GameRole").setMapInfo(tmxMap);
-        this.player1.getComponent("GameRole").set("currentGid", gid);
-        this.player1.getComponent("GameRole").set("name", "player1");
+        this._playerObjList.push(this.player0);
+        this._playerObjList.push(this.player1);
 
+        this._battleUI = this.node.getChildByName("UIRoot").getComponent("BattleUI");
+        
+        this._battleData = cc.changit.BattleData;
+        this._battleData.initRoomData(cc.changit.PlayerData.roomInfo);
 
-        this.player2 = this.mapNode.getChildByName("player2");
-        this.player2.getComponent("GameRole").setMapInfo(tmxMap);
-        this.player2.getComponent("GameRole").set("currentGid", gid);
-        this.player2.getComponent("GameRole").set("name", "player2");
+        this._initPlayerObj();
 
-        this._playerList = new Array();
-        this._playerList.push(this.player1);
-        this._playerList.push(this.player2);
+        //创建网络命令队列
+        this._netCmdList = new Array;
 
-        //随机一个先开始
-        var firstMan = cc.changit.MathEx.getRandom(1,2);
-        if(firstMan == 1){
-            this.player1.getComponent("GameRole").set("index", 1);
-            this.player2.getComponent("GameRole").set("index", 2);
-        }
-        else{
-            this.player1.getComponent("GameRole").set("index", 2);
-            this.player2.getComponent("GameRole").set("index", 1);
-        }
-        this._roundLoop();
-
+        this._startTurn();
+        //cc.log("battle logc start===>");
     },
-    //回合循环
-    _roundLoop:function(){
-        this._roundCount += 1;
-        cc.log("回合：", this._roundCount);
-
-        var player = null;
-        for (var i = 0; i < this._playerList.length; i++) {
-            var index = this._playerList[i].getComponent("GameRole").get("index");
-            cc.log("index", index);
-            if(index == 1){
-                player = this._playerList[i];
-                break;
-            }
+    _initPlayerObj(){
+        for (var v of this._battleData.playerList){
+            //cc.log("_initPlayerObj value=", v);
+            var view = v.figure;
+            //cc.log("形象：" + view + " uid:" + v.uid);
+            this[view].getComponent("GameRole").set("uid", v.uid);
+            this[view].getComponent("GameRole").set("data", v);
+            //掉线上来从房间信息设置位置
+            var pos = cc.changit.MapMgr.getPositionByGid(v.pos);
+            this[view].setPosition(pos);
+            this[view].getComponent("GameRole").set("_orginPos", pos);
         }
-        if(player != null){
-            if(this._roundCount > 1){
-                this._switchPlayerConversionPerspective(player);
+    },
+    _startTurn(){
+        if(this._battleData.status != 2 ){
+            cc.log("房间还没有开启");
+        }
+
+        this._curActorId = this._battleData.curActor;
+        this._currentPlayer = this.getPlayerObjByUid(this._curActorId);
+        this._bTurnStart = true;//开始刷新位置
+
+        //不是自己的回合
+        if(cc.changit.PlayerData.id != this._curActorId) {
+            this._battleUI.showMoveBtn(false);
+            return;
+        }
+        var gameRoleData = this._currentPlayer.getComponent("GameRole").get("data");
+        //掉线上来如果已经投过骰子
+        if(gameRoleData.dice_end ){
+            //岔路选择
+            if(gameRoleData.branches){
+                this._showBranch(gameRoleData.branches);
             }
+            //没有岔路发送消息
             else{
-                this._currentPlayer = player;
+                cc.changit.SocketMgr.sendPackage(cc.changit.Opcode.TURN_END); 
             }
-            this._currentPlayer.getComponent("GameRole").doRound(this._roundCount);
-        }    
-    },
-
-    _playerMoveEnd:function(){
-        var player = this._findNextPlayer();
-        if(player != null){
-            this._switchPlayerConversionPerspective(player);
-            player.getComponent("GameRole").doRound(this._roundCount);
         }
         else{
-            this._roundLoop();
+            this._battleUI.showMoveBtn(true);
         }
     },
-    _findNextPlayer:function(){
-        var player = null;
-        for (var i = 0; i < this._playerList.length; i++) {
-            var roundCound = this._playerList[i].getComponent("GameRole")._roundCount;
-            cc.log("_playerMoveEnd roundCound ==", roundCound);
-            if(roundCound < this._roundCount){
-                player = this._playerList[i];
-                break;
-            }
-        }
-        return player;
+    //收到网络消息，压入队列
+    OnPushNetCmd(data){
+        this._netCmdList.push(data);
     },
-    _playerMove:function(data){
-        var paths = this._getTestPath();
+
+    //net 战斗开始
+    BattleStart(){
+        this._battleData.status = 2;
+        this._startTurn();
+    },
+    //net 下一个玩家
+    NextActor(data){
+        this._curActorId = data.actor;
+        this._currentPlayer = this.getPlayerObjByUid(this._curActorId);
+        this._battleUI.refreshActor(data.actor);
+        this._battleUI.showMoveBtn(this._curActorId == cc.changit.PlayerData.id);
+        this._switchPlayerConversionPerspective();
+    },
+    //net 移动
+    Move(data){
+        this._bInCmd = true;
+        var paths = new Array();
+        for(var v of data.path){
+            var pos = cc.changit.MapMgr.getPositionByGid(v);
+            paths.push(pos);
+        }
         this._currentPlayer.getComponent("GameRole").moveByPath(paths);
     },
-    _getTestPath: function(){
-        var num = cc.changit.MathEx.getRandom(1,3);
-        var x =  this._currentPlayer.getComponent("GameRole").get("currentGid").x;
-        var y =  this._currentPlayer.getComponent("GameRole").get("currentGid").y;
-
-        var paths = new Array();
-        for (var i = 0; i < num; i++) {
-            var tx = x;
-            var ty = y -= 1;
-            paths.push( {x:tx, y:ty} );
+    //cmd 移动结束
+    OnMoveEnd(){
+        var playerUid = this._currentPlayer.getComponent("GameRole").get("uid");
+        if(playerUid == cc.changit.PlayerData.id){
+            cc.changit.SocketMgr.sendPackage(cc.changit.Opcode.TURN_END); 
         }
-        return paths;
+        this._bInCmd = false;
     },
+    //net 点数，选择岔路
+    Dice(data){
+        if(data.branch){
+            this._showBranch(data.branch);            
+        }
+        this._battleData.setData("dicePoint", data.dice_point);
+        this._battleUI.refreshDice(data.dice_point);
+    },
+    _showBranch(branchs){
+        for(var i = 0; i < branchs.length; i ++){
+            var branch = branchs[i];
+            var len = branch.length;
+            var lastPos = branch[len-1];
+            var pos = cc.changit.MapMgr.getPositionByGid(lastPos);
+            this.mapNode.getChildByName("branch" + i).setPosition(pos);
+            this.mapNode.getChildByName("branch" + i).active = true;
+        }
+    },
+    //net 新回合
+    NewTurn(data){
+        this._battleUI.refreshTurn(data.turn);
+    },
+    
+    update(dt) {
+        if (!this._bTurnStart) return;
 
-    // called every frame
-    update: function (dt) {
+        this.battleLoop();
         if (this._bIsSwitchPlayer) return;
         this._fixPlayerInCenter();
     },
 
-    _fixPlayerInCenter: function(){
+    _fixPlayerInCenter(){
         var playerPos = this._currentPlayer.getPosition(); 
         var mapPos = cc.p(0 - playerPos.x, 0 - playerPos.y);
         this.mapNode.setPosition(mapPos);
     },
 
-    _switchPlayerConversionPerspective: function(player) {
+    battleLoop(){
+        if(this._bInCmd) return;
+        if(this._netCmdList.length > 0){
+            var cmd = this._netCmdList.shift();
+            cc.log("当前执行的cmd是：", cmd.func_name, " data=", cmd.data);
+            var func = this[cmd.func_name];
+            if(func){
+                func.call(this, cmd.data)
+            }
+            else{
+                cc.log("找不到函数：", cmd.func_name);
+            }
+        }
+    },
+
+    _switchPlayerConversionPerspective(){
         this._bIsSwitchPlayer = true;
-        this._currentPlayer = player;
         var playerPos = this._currentPlayer.getPosition(); 
         var mapPos = cc.p(0 - playerPos.x, 0 - playerPos.y);
 
@@ -150,9 +202,39 @@ cc.Class({
         this.mapNode.runAction(cc.sequence(moveAction, callback));
     },
 
-    onDestroy:function(){
-        cc.log("battleLogic onDestroy");
-        cc.changit.MsgMgr.remove(cc.changit.Opcode.PLAYER_MOVE, this._playerMove);
-        cc.changit.MsgMgr.remove(cc.changit.Opcode.MOVE_END, this._playerMoveEnd);
+    //通过uid获取预制体
+    getPlayerObjByUid(uid){
+        for (var i = 0; i < this._playerObjList.length; i++) {
+            var v = this._playerObjList[i];
+            var vuid = v.getComponent("GameRole").get("uid");
+            if(vuid == uid){
+               return v;
+            }
+        }
     },
+    onDestroy(){
+        cc.log("battleLogic onDestroy");
+        cc.changit.MsgMgr.remove(cc.changit.Opcode.BATTLE_START, this.OnPushNetCmd);
+        cc.changit.MsgMgr.remove(cc.changit.Opcode.MOVE, this.OnPushNetCmd);
+        cc.changit.MsgMgr.remove(cc.changit.Opcode.NEXT_ACTOR, this.OnPushNetCmd);
+        cc.changit.MsgMgr.remove(cc.changit.Opcode.DICE, this.OnPushNetCmd);
+        cc.changit.MsgMgr.remove(cc.changit.Opcode.NEW_TURN, this.OnPushNetCmd);
+
+
+        cc.changit.MsgMgr.remove(cc.changit.Opcode.MOVE_END, this.OnMoveEnd);
+    },
+
+    
+    // _createPlayer(index, playerData){
+        // cc.log("_createPlayer index=", index);
+        // cc.log(playerData);
+        // var self = this;
+        // //加载 Prefab
+        // cc.loader.loadRes("prefab/player", function (err, prefab) {
+        //     self.player1 = cc.instantiate(prefab);
+        //     //player1.setPosition(self._getScenePos(6, 15));
+        //     self.player1.setPosition(cc.p(0, 0));
+        //     self.mapNode.addChild(self.player1);
+        // });  
+    // },
 });

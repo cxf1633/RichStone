@@ -649,7 +649,7 @@
       "a": 255
     },
     "_N$maxLength": 8,
-    "_N$stayOnTop": true
+    "_N$stayOnTop": false
   },
   {
     "__type__": "cc.Node",
@@ -951,7 +951,7 @@
       "a": 255
     },
     "_N$maxLength": 6,
-    "_N$stayOnTop": true
+    "_N$stayOnTop": false
   },
   {
     "__type__": "cc.Node",
@@ -1214,6 +1214,7 @@
     },
     "selectServerListNode": {
       "__uuid__": "db9ca0ed-676d-4f84-b148-968c4a4f7db4"
-    }
+    },
+    "_uiPanel": null
   }
 ]

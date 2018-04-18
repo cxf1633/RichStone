@@ -21,6 +21,17 @@ var MsgMgr = {
                 element.callback.call(element.target, param)
         }
     },
+    
+    // dispatchNetCmd(cmd, param) {
+    //     var array = this._msgMap[cmd]
+    //     if (array === undefined) return
+        
+    //     for (var i = 0; i < array.length; i++) {
+    //         var element = array[i]
+    //         if (element && element.callback != undefined) 
+    //             element.callback.call(element.target, cmd, param)
+    //     }
+    // },
 
     //移除一条事件监听
     remove (cmd, callback) {

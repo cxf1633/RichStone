@@ -9,10 +9,10 @@ var SocketMgr = cc.Class({
         _cachebuffs:"",
         
     },
-    isConnected:function(){
+    isConnected(){
         return this._isconnected;
     },
-    connectToServer:function(serverip){
+    connectToServer(serverip){
         cc.log("connectToServer serverip:", serverip);
         if(this.isConnected()){
             return;
@@ -35,20 +35,30 @@ var SocketMgr = cc.Class({
 
         this._socket = socket;
     },
-    nettyDidConnected:function(event){
+    nettyDidConnected(event){
         cc.log(cc.changit.SocketMgr._svr);
         cc.log("已连接至服务器:["+ cc.changit.SocketMgr._svr.serverip +"]:" + event);
         cc.changit.SocketMgr._isconnected = true;
 
         cc.changit.MsgMgr.dispatch(cc.changit.Opcode.CONNECT_SOCKET_SUCCESS)
     },
-    nettyDidRecieveData:function(event){
+    nettyDidRecieveData(event){
         var zipstr = event.data;
         cc.log("WebSocket接收数据:\n" + zipstr);
-        cc.changit.SocketMgr._cachebuffs = [cc.changit.SocketMgr._cachebuffs,zipstr].join("");
-        cc.changit.SocketMgr.generateCommand(zipstr);
+        var ret = JSON.parse(zipstr)
+        //cc.changit.SocketMgr._cachebuffs = [cc.changit.SocketMgr._cachebuffs,zipstr].join("");
+
+        if(ret.error){
+            cc.log("WebSocket error:", ret.error);
+            cc.changit.PopupManager.showPopup("错误:" + ret.error.code, cc.changit.ErrorList.errorShow(ret.error.code), null, null);
+            //cc.changit.error.show(zipstr.error);
+        }
+        else{
+            cc.changit.SocketMgr.executeCommand(ret);
+        }
+
     },
-    nettyDidDisConnected:function(event){
+    nettyDidDisConnected(event){
         cc.log("已断开与服务器:["+ cc.changit.SocketMgr._svr.serverip +"]的连接:" + event);
         cc.changit.SocketMgr._isconnected = false;
         //Cache.selectedServer = null;
@@ -58,13 +68,13 @@ var SocketMgr = cc.Class({
         cc.changit.SocketMgr._socket = null;
         //EventDispatcher.shared().dispatchEvent(SVRCMD.Disconnected);
     },
-    nettyDidError:function(event){
+    nettyDidError(event){
         cc.log("连接发生错误！\n" + event);
         //Game.netError();
         cc.changit.SocketMgr.disconnect();
     },
 
-    disconnect:function(){
+    disconnect(){
         if(!this.isConnected()){
             return;
         }
@@ -77,12 +87,11 @@ var SocketMgr = cc.Class({
         this._socket = null;
         //EventDispatcher.shared().dispatchEvent(SVRCMD.Disconnected);
     },
-
-    generateCommand:function(){
-        cc.log("generateCommand");
+    executeCommand(ret){
+        cc.changit.MsgMgr.dispatch(ret.func_name, ret)
     },
 
-    sendPackage:function(cmd, params){
+    sendPackage(cmd, params){
         var self = this;
         var sendPack = function () {            
             var sendObject = {
