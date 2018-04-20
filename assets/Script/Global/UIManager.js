@@ -49,19 +49,19 @@ var UIManager = {
         }
     },
 
-    showNode: function(_name) { 
-        cc.log("显示: " + _name)
+    showNode: function(_name) {
         for (var key in this._uiPrefabTabel) {
-            if(key === _name) {
+            if(key === _name && this._uiPrefabTabel[key] !== undefined && this._uiPrefabTabel["Tooltip"].active == false) {
+                cc.log("显示: " + _name + "成功")
                 this._uiPrefabTabel[key].active = true;
             }
         }
     },
 
     hiddenNode: function(_name) {
-        cc.log("隐藏: " + _name)
         for (var key in this._uiPrefabTabel) {
-            if(key === _name) {
+            if(key === _name && this._uiPrefabTabel[key] !== undefined && this._uiPrefabTabel["Tooltip"].active) {
+                cc.log("隐藏: " + _name + "成功")
                 this._uiPrefabTabel[key].active = false;
             }
         }
@@ -71,7 +71,8 @@ var UIManager = {
     destroyNode: function(_name) {
         cc.log("销毁: " + _name)
         for (var key in this._uiPrefabTabel) {
-            if(key === _name) {
+            if(key === _name && this._uiPrefabTabel[key] !== undefined) {
+                cc.log("销毁: " + _name + "成功")
                 this._uiPrefabTabel[key] = undefined;
             }
         }

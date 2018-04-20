@@ -31,7 +31,7 @@ var BattleLogic = cc.Class({
         //自定义消息立即执行
         cc.changit.MsgMgr.register(cc.changit.Opcode.MOVE_END, this.OnMoveEnd, this);
 
-        //cc.changit.MsgMgr.register(cc.changit.Opcode.TEST, this.OnTest, this);
+        cc.changit.MsgMgr.register(cc.changit.Opcode.TEST, this.OnTest, this);
 
         //初始化地图信息
         this.mapNode = this.node.getChildByName("map");
@@ -68,7 +68,7 @@ var BattleLogic = cc.Class({
             //掉线上来从房间信息设置位置
             var pos = cc.changit.MapMgr.getPositionByGid(v.pos);
             this[view].setPosition(pos);
-            this[view].getComponent("GameRole").set("_orginPos", pos);
+            this[view].getComponent("GameRole").set("orginPos", pos);
         }
     },
     _startTurn(){
@@ -212,6 +212,9 @@ var BattleLogic = cc.Class({
             }
         }
     },
+    OnTest(){
+
+    },
     onDestroy(){
         cc.log("battleLogic onDestroy");
         cc.changit.MsgMgr.remove(cc.changit.Opcode.BATTLE_START, this.OnPushNetCmd);
@@ -220,8 +223,9 @@ var BattleLogic = cc.Class({
         cc.changit.MsgMgr.remove(cc.changit.Opcode.DICE, this.OnPushNetCmd);
         cc.changit.MsgMgr.remove(cc.changit.Opcode.NEW_TURN, this.OnPushNetCmd);
 
-
         cc.changit.MsgMgr.remove(cc.changit.Opcode.MOVE_END, this.OnMoveEnd);
+
+        cc.changit.MsgMgr.remove(cc.changit.Opcode.TEST, this.OnTest);
     },
 
     

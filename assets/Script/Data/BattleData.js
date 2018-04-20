@@ -11,7 +11,7 @@ var BattleData = {
     nextActorId:null,     //下一个行动的玩家id
     
     dicePoint:0,    //骰子点数
-    
+
     initRoomData(info){
         this.roomId = info.id;
         this.battleInterval = info.battle_interval;

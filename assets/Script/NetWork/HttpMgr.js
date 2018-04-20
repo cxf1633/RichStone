@@ -6,6 +6,7 @@ var serverType = cc.Enum({
     Logic : 2,
 });
 
+var MsgMgr = require("MsgMgr");
 
 var HttpMgr = {
     authUrl: "192.168.199.156:80",
@@ -15,7 +16,7 @@ var HttpMgr = {
     timeout: 5000,
 
     //
-    sendHttpRequest(servertype, cmd, sendstr){
+    sendHttpRequest(servertype, cmd, dataArray){
         var xhr = cc.loader.getXMLHttpRequest();
         var requestURL = null;
         if (servertype == serverType.Auth){
@@ -30,12 +31,11 @@ var HttpMgr = {
             xhr.setRequestHeader("token", this.token)
             xhr.setRequestHeader("uid", this.uid)
         }
-        // var dataArray = Array.prototype.slice.call(arguments, 2);
-        // var sendObject = {
-        //     func_name:cmd,
-        //     params:dataArray
-        // }
-        // var sendstr = JSON.stringify(sendObject)
+        var sendObject = {
+            func_name:cmd,
+            params:dataArray
+        }
+        var sendstr = JSON.stringify(sendObject)
         cc.log("Http 发送数据>>>:\n", sendstr);
         xhr.send(sendstr);
         xhr.timeout = this.timeout;
@@ -51,16 +51,16 @@ var HttpMgr = {
                     if (servertype == serverType.Logic){
                         //更新token
                         var newToken = xhr.getResponseHeader("token")
-                        // cc.log("newToken==>", newToken);
-                        // cc.log("cc.changit.Http.token==>", cc.changit.HttpMgr.token);
-                        cc.changit.HttpMgr.token = newToken == null ? cc.changit.HttpMgr.token : newToken;
+                        cc.log("newToken==>", newToken);
+                        cc.log("Http.token==>", HttpMgr.token);
+                        HttpMgr.token = newToken == null ? HttpMgr.token : newToken;
                     }
                     if (ret.error != null){
                         //console.error(ret.error.code) //TODO 错误处理
-                        cc.changit.HttpMgr.onErrCallBack(ret.error);
+                        HttpMgr.onErrCallBack(ret.error);
                     }
                     else {
-                        cc.changit.MsgMgr.dispatch(ret.func_name, ret.data);
+                        MsgMgr.dispatch(ret.func_name, ret.data);
                     }
                 } catch (e) {
                     console.log("err:" + e);
@@ -69,29 +69,24 @@ var HttpMgr = {
         }
     },
     //发送认证服请求
-    sendAuthRequest(cmd){
-        var dataArray = Array.prototype.slice.call(arguments, 1);
-        var sendObject = {
-            func_name:cmd,
-            params:dataArray
-        }
-        var sendstr = JSON.stringify(sendObject)
-        this.sendHttpRequest(serverType.Auth, cmd, sendstr);
+    sendAuthRequest(cmd, dataArray){
+        this.sendHttpRequest(serverType.Auth, cmd, dataArray);
     },
     //请求逻辑服请求
-    sendLogicRequest (cmd){
-        var dataArray = Array.prototype.slice.call(arguments, 1);
-        var sendObject = {
-            func_name:cmd,
-            params:dataArray
-        }
-        var sendstr = JSON.stringify(sendObject)
-        this.sendHttpRequest(serverType.Logic, cmd, sendstr);
+    sendLogicRequest (cmd, dataArray){
+        this.sendHttpRequest(serverType.Logic, cmd, dataArray);
     },
     //错误处理
     onErrCallBack(errcode){
         cc.log("onErrCallBack errcode:", errcode);
     }
 };
+
+// EventDispatcher.shared = function () {
+//     if (_event_dispatcher_shared == null) {
+//         _event_dispatcher_shared = new EventDispatcher();
+//     }
+//     return _event_dispatcher_shared;
+// };
 
 module.exports = HttpMgr;

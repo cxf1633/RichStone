@@ -24,6 +24,10 @@ cc.Class({
             default: null,
             type: cc.Label
         },
+        gameSpeed: {
+            default: null,
+            type: cc.Label
+        },
         moveBtn1: {
             default: null,
             type: cc.Button
@@ -33,6 +37,18 @@ cc.Class({
             type: cc.Button
         },
         moveBtn3: {
+            default: null,
+            type: cc.Button
+        },
+        moveBtn4: {
+            default: null,
+            type: cc.Button
+        },
+        moveBtn5: {
+            default: null,
+            type: cc.Button
+        },
+        moveBtn6: {
             default: null,
             type: cc.Button
         },
@@ -52,6 +68,9 @@ cc.Class({
         cc.changit.Utils.addClickEvent(this.moveBtn1, this.node, "BattleUI", "onClick1");
         cc.changit.Utils.addClickEvent(this.moveBtn2, this.node, "BattleUI", "onClick2");
         cc.changit.Utils.addClickEvent(this.moveBtn3, this.node, "BattleUI", "onClick3");
+        cc.changit.Utils.addClickEvent(this.moveBtn4, this.node, "BattleUI", "onClick4");
+        cc.changit.Utils.addClickEvent(this.moveBtn5, this.node, "BattleUI", "onClick5");
+        cc.changit.Utils.addClickEvent(this.moveBtn6, this.node, "BattleUI", "onClick6");
 
         cc.changit.Utils.addClickEvent(this.branch0, this.node, "BattleUI", "onClickBranch0");
         cc.changit.Utils.addClickEvent(this.branch1, this.node, "BattleUI", "onClickBranch1");
@@ -76,9 +95,9 @@ cc.Class({
     _updataRoomInfo(){
         var playerData = cc.changit.PlayerData;
         var battleData = cc.changit.BattleData
-        this.roundOwner.string = "玩家:" + playerData.userName;
+        this.roundOwner.string = "自己名字:" + playerData.userName;
         this.roundCount.string = "回合:" + battleData.roundId;
-        this.nowPlayer.string = "当前:" + battleData.curActor;
+        this.nowPlayer.string = "当前玩家:" + battleData.curActor;
         this.roomId.string = "房间：" + battleData.roomId;
         
         // var data = battleData.getPlayerDataByUid(playerData.id);
@@ -99,12 +118,15 @@ cc.Class({
     },
     //
     refreshActor(str){
-        this.nowPlayer.string = "当前:" + str;
+        this.nowPlayer.string = "当前玩家:" + str;
     },
     //
     refreshDice(str) {
         this.dicePoint.string = "点数:" + str;
         this.dice = str;
+    },
+    refreshGameSpeed(str) {
+        this.gameSpeed.string = "当前速度:" + str;
     },
     OnMoveOne(){
         // this.dice -= 1;
@@ -116,13 +138,36 @@ cc.Class({
         this.showMoveBtn(false);
     },
     onClick2:function(){
-        cc.log("onClick2==>>");
-        cc.changit.MsgMgr.dispatch(cc.changit.Opcode.TEST);
+        //cc.changit.MsgMgr.dispatch(cc.changit.Opcode.TEST);
+        var speed = cc.changit.BattleData.battleSpeed;
+        speed += 1;
+        if(speed > 3){
+            speed = 1;
+        }
+        this.refreshGameSpeed(speed)
+        cc.changit.BattleData.battleSpeed = speed;
     },
     onClick3:function(){
-        cc.log("onClick3==>>");
-        //cc.changit.SocketMgr.sendPackage("JoinRoom", 123, 456, "789");
-        //cc.changit.MsgMgr.remove("test", this.doTest2);
+        var speed = cc.changit.BattleData.battleSpeed;
+        speed -= 1;
+        if(speed < 1){
+            speed = 1;
+        }
+        this.refreshGameSpeed(speed)
+        cc.changit.BattleData.battleSpeed = speed;
+    },
+    onClick4:function(){
+
+    },
+    onClick5:function(){
+        // this.res_speed = cc.changit.BattleData.battleSpeed;
+        // cc.changit.BattleData.battleSpeed = 0;
+        //cc.changit.BattleData.pauseAnimation();
+        cc.changit.MsgMgr.dispatch(cc.changit.Opcode.MOVE_END, "_doStopEvent");
+    },
+    onClick6:function(){
+        //cc.changit.BattleData.battleSpeed = this.res_speed;
+        cc.changit.BattleData.resumeAnimation();
     },
     onClickBranch0:function(){
         cc.log("onClickBranch0==>>");
@@ -137,14 +182,6 @@ cc.Class({
         this.branch1.node.active = false;
     },
     
-
-    doTest:function(param){
-        cc.log("doTest==>", param);
-    },
-    doTest2:function(param){
-        cc.log("doTest2==>>", param);
-    },
-
     onDestroy:function(){
         cc.log("battleui onDestroy");
         cc.changit.MsgMgr.remove(cc.changit.Opcode.REFRESH_DICE, this.OnMoveEnd);
