@@ -1,7 +1,7 @@
 //主城界面
 var BaseCompont = require("BaseCompont");
 
-var MainCity = cc.Class({
+var MainCityMgr = cc.Class({
     extends: BaseCompont,
 
     properties: {

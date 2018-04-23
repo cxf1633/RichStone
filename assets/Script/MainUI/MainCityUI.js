@@ -16,7 +16,7 @@ var MainCityUI = cc.Class({
 
     start () {
         cc.log("==========Init Main UI=============");
-        this.owner = this.owner.getComponent('MainCity');
+        this.owner = this.owner.getComponent('MainCityMgr');
         this.playerNameLab.string = cc.vv.UserData.userName;
         cc.vv.Utils.addClickEvent(this.matchBtn, this.node, "MainCityUI", "OnMatchBattle");
         cc.vv.Utils.addClickEvent(this.closeMatchBtn, this.node, "MainCityUI", "OnCloseMatchBattle");

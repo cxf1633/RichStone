@@ -18,7 +18,6 @@ var BattleUI = cc.Class({
         moveBtn3:  cc.Button,
         branch0: cc.Button,
         branch1: cc.Button,
-        openBtn: cc.Button,
         buildHouseUI: cc.Node,
     },
     //1，第一个调用
@@ -36,7 +35,7 @@ var BattleUI = cc.Class({
 
         cc.vv.MsgMgr.register(cc.vv.Opcode.BUY_HOUSE, this.OnOpenBulidHousePanel, this); //测试
         
-        this.owner = this.owner.getComponent('Battle');
+        this.owner = this.owner.getComponent('BattleMgr');
         this.owner.LoadEnd();
     },
     updataRoomInfo(userData, battleData){

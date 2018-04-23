@@ -1018,7 +1018,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "MainCity",
+    "_name": "MainCityMgr",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1

@@ -14,9 +14,10 @@ var SocketMgr = cc.Class({
     },
     connectToServer(serverip){
         cc.log("connectToServer serverip:", serverip);
-        if(this.isConnected()){
-            return;
-        }
+        // if(this.isConnected()){
+        //     cc.log("已经存在连接！")
+        //     return;
+        // }
         if(!serverip){
             cc.log("连接失败，无服务器信息");
             return;

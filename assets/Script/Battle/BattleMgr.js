@@ -3,7 +3,7 @@ var MapMgrClass = require("MapMgr");
 var MapMgr = new MapMgrClass();
 var BattleData = require("BattleData");
 //战斗逻辑
-var Battle = cc.Class({
+var BattleMgr = cc.Class({
     extends: BaseCompont,
 
     properties: {
@@ -42,9 +42,7 @@ var Battle = cc.Class({
         cc.vv.MsgMgr.register(cc.vv.Opcode.ACQUIREHOUSE, this.OnPushNetCmd, this);
 
         //自定义消息立即执行
-        cc.vv.MsgMgr.register(cc.vv.Opcode.EVENT_DISPOSE, this.OnEventDispose, this);
         cc.vv.MsgMgr.register(cc.vv.Opcode.MOVE_END, this.OnMoveEnd, this);
-        cc.vv.MsgMgr.register(cc.vv.Opcode.TEST, this.OnTest, this);
 
         //初始化地图信息
         var tmxMap = this.mapNode.getComponent('cc.TiledMap');
@@ -67,6 +65,9 @@ var Battle = cc.Class({
         this._battleData.initRoomData(cc.vv.UserData.get("roomInfo"));
         cc.vv.BattleData = this._battleData;
 
+        //事件处理
+        this.EventMgr = this.node.getComponent("EventMgr");
+
         this.initPlayerObj();
 
         this.initMapHouseObj();
@@ -84,16 +85,12 @@ var Battle = cc.Class({
     },
     initPlayerObj(){
         for (var v of this._battleData.playerList){
-            //cc.log("_initPlayerObj value=", v);
             var view = v.figure;
             //cc.log("形象：" + view + " uid:" + v.uid);
-            this[view].getComponent("GameRole").set("uid", v.uid);
-            this[view].getComponent("GameRole").set("data", v);
+            this[view].getComponent("RoleMgr").initData(v);
             //掉线上来从房间信息设置位置
             var pos = MapMgr.getPositionByGid(v.pos);
             this[view].setPosition(pos);
-            this[view].getComponent("GameRole").set("orginPos", pos);
-            this[view].getComponent("GameRole").set("curPos", pos);
         }
     },
     initMapHouseObj() {
@@ -126,12 +123,13 @@ var Battle = cc.Class({
             this._battleUI.showMoveBtn(false);
             return;
         }
-        var gameRoleData = this._currentPlayer.getComponent("GameRole").get("data");
+
+        var gameRole = this._currentPlayer.getComponent("RoleMgr");
         //掉线上来如果已经投过骰子
-        if(gameRoleData.dice_end ){
+        if(gameRole.get("dice_end") ){
             //岔路选择
-            if(gameRoleData.branches){
-                this.showBranch(gameRoleData.branches);
+            if(gameRole.get("branches")){
+                this.showBranch(gameRole.get("branches"));
             }
             //没有岔路发送消息
             else{
@@ -165,72 +163,16 @@ var Battle = cc.Class({
         this._bInCmd = true;
         var paths = new Array();
         var finallyLandId = data.path[data.path.length - 1];//测试
-        this._currentPlayer.getComponent("GameRole").set("finallyLandId", finallyLandId);//测试
+        this._currentPlayer.getComponent("RoleMgr").set("finallyLandId", finallyLandId);//测试
         for(var v of data.path){
             var pos = MapMgr.getPositionByGid(v);
             paths.push(pos);
         }
-        this._currentPlayer.getComponent("GameRole").moveByPath(paths);
+        this._currentPlayer.getComponent("RoleMgr").moveByPath(paths);
     },
-    //cmd 移动结束
-    OnEventDispose(){//测试
-        var playerUid = this._currentPlayer.getComponent("GameRole").get("uid");
-        if(playerUid == cc.vv.UserData.userId){
-            var _finallyLandId = this._currentPlayer.getComponent("GameRole").get("finallyLandId");
 
-            if(this._mapGridTable === null) {
-                this._mapGridTable = cc.vv.ConfigData.getConfigData("map_grid");
-            }
-            var _mapGrid = this._mapGridTable[this._currentPlayer.getComponent("GameRole").get("finallyLandId") - 1]; //获取配置表下标从0开始 需 -1
-            if(_mapGrid.grid_type === 1) {
-                var _landData = this._battleData.getlandState(_mapGrid.attach_grid_id);
-                if(_landData.owner_id == 0 || _landData.owner_id == playerUid) {
-
-                    if(this._gridLvDataTable === null) {
-                        this._gridLvDataTable = cc.vv.ConfigData.getConfigData("grid_lv");
-                    }
-                    var _UserData = this._battleData.getUserDataByUid(playerUid);
-
-                    var _urrentLv = _landData.lv;
-
-                    if(_UserData.circle > _urrentLv) {
-                        var _testData = this._gridLvDataTable[_urrentLv + 1];
-                        if(_testData.is_landmark == 0) {
-                            var _lvCost = _testData.lv_cost_times * _mapGrid.cost;
-                            
-                            if(_UserData.money >= _lvCost) {
-                                cc.vv.MsgMgr.dispatch(cc.vv.Opcode.BUY_HOUSE, _mapGrid);
-                            }
-                            else {
-                                cc.vv.Tooltip.show("金钱不足,不能购买");
-                                this.OnMoveEnd();
-                            }
-                        }
-                        else {
-                            //地标(新框)
-                            cc.vv.Tooltip.show("是否购买地标");
-                        }
-                    }
-                    else {
-                        cc.vv.Tooltip.show("圈数不足,不能购买");
-                        this.OnMoveEnd();
-                    }
-                }
-                else{
-                    //cc.vv.Tooltip.show("你移动到得地块是 UID:" + _landData.owner_id + " 的土地, 需要缴交过路费");
-                    this.OnMoveEnd();
-                }
-            }
-            else {
-                this.OnMoveEnd();
-            }
-        }
-        else {
-            this._bInCmd = false;
-        }
-    },
     OnMoveEnd() {
-        var playerUid = this._currentPlayer.getComponent("GameRole").get("uid");
+        var playerUid = this._currentPlayer.getComponent("RoleMgr").get("uid");
         if(playerUid == cc.vv.UserData.userId){
             cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.TURN_END); 
         }
@@ -322,11 +264,14 @@ var Battle = cc.Class({
         this.mapNode.runAction(cc.sequence(moveAction, callback));
     },
 
+    isMyTurn(uid){
+        return uid == cc.vv.UserData.userId;
+    },
     //通过uid获取预制体
     getPlayerObjByUid(uid){
         for (var i = 0; i < this._playerObjList.length; i++) {
             var v = this._playerObjList[i];
-            var vuid = v.getComponent("GameRole").get("uid");
+            var vuid = v.getComponent("RoleMgr").get("uid");
             if(vuid == uid){
             return v;
             }
@@ -343,8 +288,5 @@ var Battle = cc.Class({
         cc.vv.MsgMgr.remove(cc.vv.Opcode.NEW_CIRCLE, this.OnPushNetCmd);
         cc.vv.MsgMgr.remove(cc.vv.Opcode.UPDATE_MONEY, this.OnPushNetCmd);
         cc.vv.MsgMgr.remove(cc.vv.Opcode.ACQUIREHOUSE, this.OnPushNetCmd);
-
-        cc.vv.MsgMgr.remove(cc.vv.Opcode.EVENT_DISPOSE, this.OnEventDispose);
-        cc.vv.MsgMgr.remove(cc.vv.Opcode.TEST, this.OnTest);
     },
 });

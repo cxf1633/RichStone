@@ -16,7 +16,7 @@ var LoginUI = cc.Class({
     },
 
     onLoad () {
-        this.owner = this.owner.getComponent('Login');
+        this.owner = this.owner.getComponent('LoginMgr');
         cc.vv.Utils.addClickEvent(this.loginBtn, this.node, "LoginUI", "onLoginGame");
        //读取用户数据
        var userLoginData = JSON.parse(cc.sys.localStorage.getItem('lastUserData'));

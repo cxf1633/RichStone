@@ -20,7 +20,7 @@ function initMgr(){
     cc.vv.ConfigData = new ConfigData();
 }
 
-var Login = cc.Class({
+var LoginMgr = cc.Class({
     extends: BaseCompont,
     properties: {
     },

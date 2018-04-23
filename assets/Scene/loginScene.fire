@@ -1246,7 +1246,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Login",
+    "_name": "LoginMgr",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
