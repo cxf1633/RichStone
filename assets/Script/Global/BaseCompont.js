@@ -17,25 +17,25 @@ var BaseCompont = cc.Class({
         this.mProperty[name] = value;
     },
     modify(name, value){
-        //this.mProperty[name] = this.mProperty[name] + value;
+        this.mProperty[name] = this.mProperty[name] + value;
 	    return this.mProperty[name];
     },
     printProperty(){
         cc.log("BaseCompont printProperty");
     },
     runActionBySpeed(action){
-        var speed = cc.changit.BattleData.battleSpeed;
+        var speed = 1//cc.vv.BattleData.battleSpeed;
         cc.log("BaseCompont runActionBySpeed speed =", speed);
         var act =  cc.speed(action, speed);
         this.node.runAction(act);
     },
 
     playAniBySpeed(aniNode, clip){
-        var speed = cc.changit.BattleData.battleSpeed;
-        cc.log("BaseCompont playAniBySpeed speed =", speed);
+        //var speed = cc.vv.BattleData.battleSpeed;
+        //cc.log("BaseCompont playAniBySpeed speed =", speed);
         var animState = aniNode.play(clip);
-        animState.speed = speed;
+        //animState.speed = speed;
     }
 });
 
-//exports.BaseCompont
+//module.exports = BaseCompont;

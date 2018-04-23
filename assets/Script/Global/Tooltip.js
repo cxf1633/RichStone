@@ -15,11 +15,11 @@ cc.Class({
         _tipItemList:[],
     },
 
-    show: function(_aaa) {
+    show: function(_label) {
         var self = this;
-        cc.changit.UIManager.getNode("prefab/Tooltip", null, function(go) {
+        cc.vv.UIManager.getNode("prefab/Tooltip", null, function(go) {
             self._uiPanel = go.getComponent("Tooltip");
-            self._uiPanel.showFrame(_aaa);
+            self._uiPanel.showFrame(_label);
         }, 20);
     },
 
@@ -46,7 +46,7 @@ cc.Class({
     },
 
     onDestroy() {
-        cc.changit.UIManager.destroyNode("Tooltip");
+        cc.vv.UIManager.destroyNode("Tooltip");
         this._tipItemList = null;
     },
 });

@@ -3,16 +3,32 @@
 var UserData = {
     userId:null,
     userName:null,
+    mProperty:{},
     init(data){
         cc.log("UserData init data:", data);
         this.userId = data.player.id;
         this.userName = data.player.name;
-    }
+    },
+    get(name){
+        //cc.log("BaseCompont get:", name);
+        var ret = this.mProperty[name];
+        return ret;
+    },
+    set(name, value){
+        //cc.log("BaseCompont set:", name, value);
+        this.mProperty[name] = value;
+    },
+    modify(name, value){
+        this.mProperty[name] = this.mProperty[name] + value;
+	    return this.mProperty[name];
+    },
 };
 
-module.exports = {
-    _instance:UserData
-}
+module.exports = UserData;
+
+// module.exports = {
+//     _instance:UserData
+// }
 
 //=============>>>cc.Class也是可以的
 // //用户信息

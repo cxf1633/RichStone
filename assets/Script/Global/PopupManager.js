@@ -22,7 +22,7 @@ var PopupManager = {
         };
         var self = this;
         var selfData = this._popList.shift();
-        cc.changit.UIManager.getNode("prefab/CommonPopup", null, function(go) {
+        cc.vv.UIManager.getNode("prefab/CommonPopup", null, function(go) {
             self._uiPanel = go.getComponent("CommonPopup");
             self._uiPanel.show(selfData.title1, selfData.content1, selfData.onConfirm1, selfData.onCancel1);
         }, 10);

@@ -1,8 +1,9 @@
 //数据库配置文件
 
-var ConfigData = {
+var ConfigData = cc.Class({
+    allData:null,
 
-    init:function(){
+    ctor(){
         cc.log("正在初始化游戏配置表");
         var bRet = false;
         if(bRet){
@@ -31,23 +32,38 @@ var ConfigData = {
         }
         else{
             cc.log("从本地加载数据：ConfigData.json");
+            var self = this;
             cc.loader.loadRes("ConfigData",function(err,txt){
                 if (err) {
                     cc.error(err.message || err);
                     return;
                 }
-                ConfigData.initData(txt);
+                self.initData(txt);
             });
         }
     },
 
-    initData:function(alldata){
+    initData(alldata){
+        this.allData = alldata;
         //var alldata = JSON.parse(txt);
-        cc.log("正在读取配置表【配置表版本："+alldata["config_version"][0].version+"】");
+        // cc.log("正在读取配置表【配置表版本："+alldata["config_version"][0].version+"】");
 
-        cc.log(alldata["achievement"][0].desc);
+        // cc.log(alldata["achievement"][0].desc);
 
-    }
-};
+    },
+
+    getConfigData(_tableName, _key, _fieldName) {
+        if(_tableName !== undefined && _key !== undefined && _fieldName !== undefined) {
+            return this.allData[_tableName][_key][_fieldName];
+        }
+        else if(_tableName !== undefined && _key !== undefined) {
+            return this.allData[_tableName][_key];
+        }
+        else if(_tableName !== undefined) {
+            return this.allData[_tableName];
+        }
+        return null;
+    },
+});
 
 module.exports = ConfigData

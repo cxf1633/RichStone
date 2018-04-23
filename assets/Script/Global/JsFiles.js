@@ -3,6 +3,8 @@ var JsFiles = [
     "MainGame", 
     "BattleLogic", 
     "BattleUI", 
+    "BuildHouseItem", 
+    "BuildHouseUI", 
     "GameRole", 
     "MapMgr", 
     "BattleData", 

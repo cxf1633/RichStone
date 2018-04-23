@@ -17,8 +17,8 @@ var GameRole = cc.Class({
         this._anim = this.node.getComponent(cc.Animation);
         this.playAniBySpeed(this._anim, "move_up")
         //this._curPos = this._orginPos;
-        var orginPos = this.get("orginPos")
-        this.set("curPos", orginPos);
+        // var orginPos = this.get("orginPos")
+        // this.set("curPos", orginPos);
     },
 
     moveByPath(paths){
@@ -46,7 +46,7 @@ var GameRole = cc.Class({
         this._playAni();
 
         //待优化：数据驱动UI
-        cc.changit.MsgMgr.dispatch(cc.changit.Opcode.MOVE_ONE)
+        cc.vv.MsgMgr.dispatch(cc.vv.Opcode.MOVE_ONE)
     },
     _playAni(){
         var c = this.get("curPos");
@@ -100,8 +100,8 @@ var GameRole = cc.Class({
     },
     _doStopEvent(){
         cc.log("_doStopEvent");
-        //this._anim.stop();
-        cc.changit.MsgMgr.dispatch(cc.changit.Opcode.MOVE_END, "_doStopEvent");
+        this._anim.stop();
+        cc.vv.MsgMgr.dispatch(cc.vv.Opcode.EVENT_DISPOSE, "_doStopEvent");
     },
 
 });

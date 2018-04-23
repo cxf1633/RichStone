@@ -25,7 +25,7 @@
   {
    "k": "THROW_TIME", 
    "remark": "投掷骰子的时间（单位：秒）", 
-   "v": "10"
+   "v": "3"
   }, 
   {
    "k": "TURN_RECOVER_FOOD", 
@@ -48,7 +48,7 @@
    "grid_type": 2
   }, 
   {
-   "cost": 0, 
+   "cost": 100000, 
    "grid_group": 2, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -56,35 +56,35 @@
    "grid_id": 2, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "2", 
+   "attach_grid_id": "52", 
    "id": 2, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 3, 
+   "cost": 100000, 
+   "grid_group": 2, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 3, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "3", 
+   "attach_grid_id": "53", 
    "id": 3, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 4, 
+   "cost": 100000, 
+   "grid_group": 2, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 4, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "4", 
+   "attach_grid_id": "54", 
    "id": 4, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
    "cost": 0, 
@@ -95,7 +95,7 @@
    "grid_id": 5, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "5", 
+   "attach_grid_id": "55,56,57,58", 
    "id": 5, 
    "grid_type": 0
   }, 
@@ -108,7 +108,7 @@
    "grid_id": 6, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "6", 
+   "attach_grid_id": "55,56,57,58", 
    "id": 6, 
    "grid_type": 0
   }, 
@@ -119,7 +119,7 @@
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 7, 
-   "stop_event_Id": 5, 
+   "stop_event_Id": 0, 
    "grid_name": "", 
    "attach_grid_id": "59", 
    "id": 7, 
@@ -127,12 +127,12 @@
   }, 
   {
    "cost": 100000, 
-   "grid_group": 8, 
+   "grid_group": 7, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 8, 
-   "stop_event_Id": 5, 
+   "stop_event_Id": 0, 
    "grid_name": "", 
    "attach_grid_id": "60", 
    "id": 8, 
@@ -140,12 +140,12 @@
   }, 
   {
    "cost": 200000, 
-   "grid_group": 9, 
+   "grid_group": 7, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 9, 
-   "stop_event_Id": 5, 
+   "stop_event_Id": 0, 
    "grid_name": "", 
    "attach_grid_id": "61", 
    "id": 9, 
@@ -165,7 +165,7 @@
    "grid_type": 0
   }, 
   {
-   "cost": 0, 
+   "cost": 100000, 
    "grid_group": 11, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -173,35 +173,35 @@
    "grid_id": 11, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "11", 
+   "attach_grid_id": "62", 
    "id": 11, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 12, 
+   "cost": 100000, 
+   "grid_group": 11, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 12, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "12", 
+   "attach_grid_id": "63", 
    "id": 12, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 13, 
+   "cost": 100000, 
+   "grid_group": 11, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 13, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "13", 
+   "attach_grid_id": "64", 
    "id": 13, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
    "cost": 0, 
@@ -212,12 +212,12 @@
    "grid_id": 14, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "14", 
+   "attach_grid_id": "65,66,67,68", 
    "id": 14, 
    "grid_type": 0
   }, 
   {
-   "cost": 0, 
+   "cost": 200000, 
    "grid_group": 15, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -225,48 +225,48 @@
    "grid_id": 15, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "15", 
+   "attach_grid_id": "100", 
    "id": 15, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 16, 
+   "cost": 200000, 
+   "grid_group": 15, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 16, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "16", 
+   "attach_grid_id": "89", 
    "id": 16, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 17, 
+   "cost": 200000, 
+   "grid_group": 15, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 17, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "17", 
+   "attach_grid_id": "99", 
    "id": 17, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 18, 
+   "cost": 200000, 
+   "grid_group": 15, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 18, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "18", 
+   "attach_grid_id": "90", 
    "id": 18, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
    "cost": 0, 
@@ -277,7 +277,7 @@
    "grid_id": 19, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "19", 
+   "attach_grid_id": "95,96,97,98", 
    "id": 19, 
    "grid_type": 0
   }, 
@@ -290,12 +290,12 @@
    "grid_id": 20, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "20", 
+   "attach_grid_id": "95,96,97,98", 
    "id": 20, 
    "grid_type": 0
   }, 
   {
-   "cost": 0, 
+   "cost": 200000, 
    "grid_group": 21, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -303,48 +303,48 @@
    "grid_id": 21, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "21", 
+   "attach_grid_id": "91", 
    "id": 21, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 22, 
+   "cost": 200000, 
+   "grid_group": 21, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 22, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "22", 
+   "attach_grid_id": "92", 
    "id": 22, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 23, 
+   "cost": 200000, 
+   "grid_group": 21, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 23, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "23", 
+   "attach_grid_id": "93", 
    "id": 23, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 24, 
+   "cost": 200000, 
+   "grid_group": 21, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 24, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "24", 
+   "attach_grid_id": "94", 
    "id": 24, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
    "cost": 0, 
@@ -355,12 +355,12 @@
    "grid_id": 25, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "25", 
+   "attach_grid_id": "65,66,67,68", 
    "id": 25, 
    "grid_type": 0
   }, 
   {
-   "cost": 0, 
+   "cost": 200000, 
    "grid_group": 26, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -368,12 +368,12 @@
    "grid_id": 26, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "26", 
+   "attach_grid_id": "69", 
    "id": 26, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
+   "cost": 200000, 
    "grid_group": 27, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -381,22 +381,22 @@
    "grid_id": 27, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "27", 
+   "attach_grid_id": "70", 
    "id": 27, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 28, 
+   "cost": 200000, 
+   "grid_group": 27, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 28, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "28", 
+   "attach_grid_id": "71", 
    "id": 28, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
    "cost": 0, 
@@ -412,7 +412,7 @@
    "grid_type": 0
   }, 
   {
-   "cost": 0, 
+   "cost": 200000, 
    "grid_group": 30, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -420,100 +420,100 @@
    "grid_id": 30, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "30", 
+   "attach_grid_id": "72", 
    "id": 30, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 31, 
+   "cost": 200000, 
+   "grid_group": 30, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 31, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "31", 
+   "attach_grid_id": "73", 
    "id": 31, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 32, 
+   "cost": 200000, 
+   "grid_group": 30, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 32, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "32", 
+   "attach_grid_id": "74", 
    "id": 32, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 33, 
+   "cost": 200000, 
+   "grid_group": 30, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 33, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "33", 
+   "attach_grid_id": "75", 
    "id": 33, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 34, 
+   "cost": 200000, 
+   "grid_group": 30, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 34, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "34", 
+   "attach_grid_id": "76", 
    "id": 34, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 35, 
+   "cost": 200000, 
+   "grid_group": 30, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 35, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "35", 
+   "attach_grid_id": "77", 
    "id": 35, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 36, 
+   "cost": 200000, 
+   "grid_group": 30, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 36, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "36", 
+   "attach_grid_id": "78", 
    "id": 36, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 37, 
+   "cost": 200000, 
+   "grid_group": 30, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 37, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "37", 
+   "attach_grid_id": "79", 
    "id": 37, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
    "cost": 0, 
@@ -633,7 +633,7 @@
    "grid_type": 0
   }, 
   {
-   "cost": 0, 
+   "cost": 200000, 
    "grid_group": 47, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -641,61 +641,61 @@
    "grid_id": 47, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "47", 
+   "attach_grid_id": "84", 
    "id": 47, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 48, 
+   "cost": 200000, 
+   "grid_group": 47, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 48, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "48", 
+   "attach_grid_id": "85", 
    "id": 48, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 49, 
+   "cost": 200000, 
+   "grid_group": 47, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 49, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "49", 
+   "attach_grid_id": "86", 
    "id": 49, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 50, 
+   "cost": 200000, 
+   "grid_group": 47, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 50, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "50", 
+   "attach_grid_id": "87", 
    "id": 50, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
-   "grid_group": 51, 
+   "cost": 200000, 
+   "grid_group": 47, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
    "grid_attributive": 0, 
    "grid_id": 51, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "51", 
+   "attach_grid_id": "88", 
    "id": 51, 
-   "grid_type": 0
+   "grid_type": 1
   }
  ], 
  "grid_lv": [
@@ -737,7 +737,7 @@
    "lv_cost_times": 120.0, 
    "pass_cost_times": 30.0, 
    "need_circle": 4, 
-   "is_landmark": 0
+   "is_landmark": 1
   }, 
   {
    "name": "", 
@@ -745,57 +745,166 @@
    "lv_cost_times": 160.0, 
    "pass_cost_times": 40.0, 
    "need_circle": 5, 
-   "is_landmark": 0
+   "is_landmark": 1
   }
  ], 
  "map_mode": [
   {
    "battle_time": 600, 
-   "start_money": 0, 
+   "start_money": 1000000000, 
    "map_id": 800001, 
+   "win_condition": 0, 
    "map_scene_id": 800001, 
-   "start_wages": 0, 
+   "start_wages": 10000, 
    "mode": 1, 
    "map_name": "石器时代", 
    "mode_name": "1v1", 
    "start_energy": 0
   }
  ], 
- "skill": [], 
  "event": [
   {
    "is_transfer": 0, 
-   "event_type": 1, 
-   "weight": 0, 
+   "event_type": 10, 
    "is_selected": 0, 
    "event_id": 1, 
-   "countinue_time": 0, 
+   "countinue_time": 1, 
+   "prompt": "", 
    "occur_delay_type": 0, 
    "countinue_time_type": 0, 
    "base_type": 0, 
-   "base": 50000, 
+   "base": 1, 
    "img_id": 0, 
    "delay_time": 0, 
-   "intro": "增加5万金币", 
-   "grid_type": 0, 
+   "prompt_type": 0, 
+   "times": 1, 
+   "intro": "增加一个月工资", 
    "target": 10
   }, 
   {
    "is_transfer": 0, 
-   "event_type": 1, 
-   "weight": 0, 
+   "event_type": 10, 
    "is_selected": 0, 
    "event_id": 2, 
-   "countinue_time": 0, 
+   "countinue_time": 1, 
+   "prompt": "", 
    "occur_delay_type": 0, 
    "countinue_time_type": 0, 
    "base_type": 0, 
-   "base": 100000, 
+   "base": 2, 
    "img_id": 0, 
    "delay_time": 0, 
-   "intro": "增加10万金币", 
-   "grid_type": 0, 
+   "prompt_type": 0, 
+   "times": 1, 
+   "intro": "增加2个月工资", 
    "target": 10
+  }, 
+  {
+   "is_transfer": 0, 
+   "event_type": 5, 
+   "is_selected": 0, 
+   "event_id": 3, 
+   "countinue_time": 1, 
+   "prompt": "0", 
+   "occur_delay_type": 0, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 1, 
+   "img_id": 0, 
+   "delay_time": 0, 
+   "prompt_type": 0, 
+   "times": 1, 
+   "intro": "增加土地1级", 
+   "target": 1
+  }, 
+  {
+   "is_transfer": 0, 
+   "event_type": 5, 
+   "is_selected": 0, 
+   "event_id": 4, 
+   "countinue_time": 1, 
+   "prompt": "0", 
+   "occur_delay_type": 0, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": -1, 
+   "img_id": 0, 
+   "delay_time": 0, 
+   "prompt_type": 0, 
+   "times": 1, 
+   "intro": "降低土地1级", 
+   "target": 1
+  }, 
+  {
+   "is_transfer": 0, 
+   "event_type": 9, 
+   "is_selected": 0, 
+   "event_id": 5, 
+   "countinue_time": 3, 
+   "prompt": "0", 
+   "occur_delay_type": 0, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 1, 
+   "img_id": 0, 
+   "delay_time": 0, 
+   "prompt_type": 0, 
+   "times": 1, 
+   "intro": "每次只走一步", 
+   "target": 1
+  }
+ ], 
+ "card": [
+  {
+   "charge": 1, 
+   "cost": 2, 
+   "name": "建屋卡", 
+   "area": 1, 
+   "img_id": 0, 
+   "camp": 1, 
+   "area_var": 0, 
+   "event3": 0, 
+   "range": 0, 
+   "intro": "增加己方土地1级", 
+   "performance": 0, 
+   "event1": 3, 
+   "event2": 0, 
+   "id": 1, 
+   "target": 3
+  }, 
+  {
+   "charge": 1, 
+   "cost": 3, 
+   "name": "拆屋卡", 
+   "area": 1, 
+   "img_id": 0, 
+   "camp": 2, 
+   "area_var": 0, 
+   "event3": 0, 
+   "range": 0, 
+   "intro": "降低敌方某个土地1级", 
+   "performance": 0, 
+   "event1": 4, 
+   "event2": 0, 
+   "id": 2, 
+   "target": 3
+  }, 
+  {
+   "charge": 1, 
+   "cost": 1, 
+   "name": "乌龟卡", 
+   "area": 1, 
+   "img_id": 0, 
+   "camp": 3, 
+   "area_var": 0, 
+   "event3": 0, 
+   "range": 0, 
+   "intro": "乌龟", 
+   "performance": 0, 
+   "event1": 5, 
+   "event2": 0, 
+   "id": 3, 
+   "target": 3
   }
  ]
 }

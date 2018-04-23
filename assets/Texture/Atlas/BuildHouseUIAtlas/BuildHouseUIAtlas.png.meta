@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "fbdb2547-71f2-4cac-b8b2-b7f660c63528",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "BuildHouseUIAtlas": {
+      "ver": "1.0.3",
+      "uuid": "43c66ba4-2c42-4843-96ba-d9f1ec5e0563",
+      "rawTextureUuid": "fbdb2547-71f2-4cac-b8b2-b7f660c63528",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -4,
+      "offsetY": 274,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 1012,
+      "height": 472,
+      "rawWidth": 1024,
+      "rawHeight": 1024,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

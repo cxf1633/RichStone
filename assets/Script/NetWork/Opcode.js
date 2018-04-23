@@ -18,6 +18,10 @@ Opcode = {
     NEXT_ACTOR:"NextActor",     //回合拥有者
     CHOOSE_BRANCH:"ChooseBranch",//选择岔路
     TURN_END:"TurnEnd",   //回合结束
+    NEW_CIRCLE:"NewCircle",     //进入新的一圈
+    UPDATE_MONEY:"UpdateMoney", //更新金币
+    BUYHOUSE:"BuyHouse",
+    ACQUIREHOUSE:"AcquireHouse",
     
 
     GM_CLOSE_ROOM:"GMCloseRoom",//GMCloseRoom 参数 roomID 关闭一个战斗中的房间
@@ -31,11 +35,14 @@ Opcode = {
     INIT_DATA_OVER : "InitDataOver",//主城数据初始化完成通知
     ROUND: "Round",
     PLAYER_MOVE:"PlayerMove",
+    EVENT_DISPOSE:"Event_Dispose",
     MOVE_END:"MoveEnd",
 
     ENTER_BATTLE:"Enter_Battle",//进入战斗
     SHOW_BRANCH:"Show_Branch",  //显示可选路劲
     MOVE_ONE:"Move_One",
+    BUY_HOUSE:"Buy_House", // 购买房子
+    
     
     TEST:"Test",
 };

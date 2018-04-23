@@ -1,7 +1,6 @@
-var BaseCompont = require("BaseCompont");
-var Utils = require("Utils");
-var PopupManager = require("PopupManager");
+
 //登录UI
+var BaseCompont = require("BaseCompont");
 var LoginUI = cc.Class({
     extends: BaseCompont,
     properties: {
@@ -18,7 +17,7 @@ var LoginUI = cc.Class({
 
     onLoad () {
         this.owner = this.owner.getComponent('Login');
-        Utils.addClickEvent(this.loginBtn, this.node, "LoginUI", "onLoginGame");
+        cc.vv.Utils.addClickEvent(this.loginBtn, this.node, "LoginUI", "onLoginGame");
        //读取用户数据
        var userLoginData = JSON.parse(cc.sys.localStorage.getItem('lastUserData'));
        if(userLoginData){
@@ -39,7 +38,7 @@ var LoginUI = cc.Class({
             this.owner.SendLogin(this.userInputLabel.string, this.passwordInputLabel.string);
         }
         else {
-            //PopupManager.showPopup("错误", "用户名与密码不能为空", null, null);
+            cc.vv.PopupManager.showPopup("错误", "用户名与密码不能为空", null, null);
         }
     },
 });

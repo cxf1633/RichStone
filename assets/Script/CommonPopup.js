@@ -32,8 +32,8 @@ cc.Class({
     },
 
     onLoad () {
-        cc.changit.Utils.addClickEvent(this.confirmBtn, this.node, "CommonPopup", "onBtnClicked");
-        cc.changit.Utils.addClickEvent(this.cancelBtn, this.node, "CommonPopup", "onBtnClicked");
+        cc.vv.Utils.addClickEvent(this.confirmBtn, this.node, "CommonPopup", "onBtnClicked");
+        cc.vv.Utils.addClickEvent(this.cancelBtn, this.node, "CommonPopup", "onBtnClicked");
     },
 
     show: function(title, content, onConfirm, onCancel) {
@@ -72,7 +72,7 @@ cc.Class({
     },
 
     onDestroy() {
-        cc.changit.UIManager.destroyNode("CommonPopup");
-        cc.changit.PopupManager.updatePopUp();
+        cc.vv.UIManager.destroyNode("CommonPopup");
+        cc.vv.PopupManager.updatePopUp();
     }
 });
