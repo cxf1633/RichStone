@@ -1,25 +1,21 @@
-var BaseCompont = require("BaseCompont");
-var EventMgr = cc.Class({
-    extends: BaseCompont,
-
-    properties: {
+//买房子
+var Event_BuyHouse = {
+    
+    init(battleMgr){
+        this.BattleMgr = battleMgr;
     },
-    start () {
-        this.BattleMgr = this.node.getComponent("BattleMgr");
-
-        cc.vv.MsgMgr.register(cc.vv.Opcode.EVENT_DISPOSE, this.OnEventDispose, this);
-    },
-    OnEventDispose(){
+    executeEvent(){
+        cc.log("Event_BuyHouse");
         var roleMgr = this.BattleMgr._currentPlayer.getComponent("RoleMgr");
         if(roleMgr.get("uid") != cc.vv.UserData.userId){
             cc.log("不是自己回合，跳过");
             this.BattleMgr._bInCmd = false;
             return;
         }
-        //最后一格id
-        var finallyLandId = roleMgr.get("finallyLandId");
+        //当前格子id
+        var curGid = roleMgr.get("curGid");
         var mapGridList = cc.vv.ConfigData.getConfigData("map_grid");
-        var mapGrid = mapGridList[finallyLandId - 1]; //获取配置表下标从0开始 需 -1
+        var mapGrid = mapGridList[curGid - 1]; //获取配置表下标从0开始 需 -1
         if(mapGrid.grid_type != 1) {//'1=普通地块2=银行3=事件区域4=命运区域5=占卜屋6=卡牌商店',
             cc.log("不是普通地块，跳过");
             this.BattleMgr.OnMoveEnd();
@@ -53,8 +49,6 @@ var EventMgr = cc.Class({
             }
         }
     },
+}
 
-    onDestroy(){
-        cc.vv.MsgMgr.remove(cc.vv.Opcode.EVENT_DISPOSE, this.OnEventDispose);
-    }
-});
+module.exports = Event_BuyHouse;

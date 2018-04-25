@@ -51,8 +51,8 @@ var HttpMgr = {
                     if (servertype == serverType.Logic){
                         //更新token
                         var newToken = xhr.getResponseHeader("token")
-                        cc.log("newToken==>", newToken);
-                        cc.log("Http.token==>", HttpMgr.token);
+                        // cc.log("newToken==>", newToken);
+                        // cc.log("Http.token==>", HttpMgr.token);
                         HttpMgr.token = newToken == null ? HttpMgr.token : newToken;
                     }
                     if (ret.error != null){

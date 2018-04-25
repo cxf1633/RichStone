@@ -68,7 +68,7 @@ cc.Class({
         //更新地块数据
         cc.log("打开窗口并更新数据")
         this.node.active = true;
-        this.itemParent.position = cc.p(-285, 0);
+        this.itemParent.position = cc.p(-290, 0);
         this.titleLabel.string = "广场";
         
         for (var v of this._itemTable) {
@@ -87,8 +87,8 @@ cc.Class({
 
     onButHouse: function() {
         if(cc.vv.BattleData.getUserDataByUid(cc.vv.UserData.userId).circle >= this._selectItem._needCircle) {
-            cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.BUYHOUSE, [this._selectItem._id]);
-            if(this._selectItem._id == 0) {  //临时提示 需要服务器校验
+            cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.BUYHOUSE, [this._selectItem._level]);
+            if(this._selectItem._level == 0) {  //临时提示 需要服务器校验
                 cc.vv.Tooltip.show("你已购买当前地块,消耗金钱:" + this._selectItem._buildingExpense);
             }
             else {

@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "aadd82ec-4acb-4360-b4c9-c26832a7eb1e",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "icon_fubiao_huang": {
+      "ver": "1.0.3",
+      "uuid": "e4ed36f1-e9ef-4382-a77d-b37bea4b2647",
+      "rawTextureUuid": "aadd82ec-4acb-4360-b4c9-c26832a7eb1e",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0.5,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 54,
+      "height": 59,
+      "rawWidth": 54,
+      "rawHeight": 60,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

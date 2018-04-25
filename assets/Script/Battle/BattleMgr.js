@@ -13,21 +13,20 @@ var BattleMgr = cc.Class({
         _bIsSwitchPlayer: false,
         _bBattleStart:false,
         _bTurnStart:false,
-
+    
         
         _netCmdList:null,   //网络队列
         _bInCmd:false,      //是否在命令中
-
+    
         _gridLvDataTable: null, //grid_lv表数据
         _mapGridTable: null,    //map_grid表数据
         _mapHouseTable: [],
         _mapHouseMode: null,
         _mapHouseParent: null,
-
         //
         mapNode: cc.Node,
     },
-
+    _bTouch:false,
     start () {
         //创建网络命令队列
         this._netCmdList = new Array;
@@ -52,29 +51,22 @@ var BattleMgr = cc.Class({
         this._mapHouseMode = this.mapNode.getChildByName("House");
         this._mapHouseParent = this.mapNode.getChildByName("houseParent");
 
-        //角色
-        this._playerObjList = new Array();
-        this.player0 = this.mapNode.getChildByName("player0");
-        this.player1 = this.mapNode.getChildByName("player1");
-        this._playerObjList.push(this.player0);
-        this._playerObjList.push(this.player1);
-
-        this._battleUI = this.node.getChildByName("BattleUI").getComponent("BattleUI");
-        
+        //地图信息
         this._battleData = new BattleData();
         this._battleData.initRoomData(cc.vv.UserData.get("roomInfo"));
         cc.vv.BattleData = this._battleData;
 
-        //事件处理
-        this.EventMgr = this.node.getComponent("EventMgr");
-
+        //初始化角色
         this.initPlayerObj();
 
+        //初始化房子
         this.initMapHouseObj();
-        //刷新UI
+
+        //刷新UI 
+        this._battleUI = this.node.getChildByName("BattleUI").getComponent("BattleUI");
         this._battleUI.updataRoomInfo(cc.vv.UserData, this._battleData);
 
-        this.startTurn();
+
     },
     //UI调用
     LoadEnd(){
@@ -82,8 +74,17 @@ var BattleMgr = cc.Class({
         cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.LOAD_END);
         var roomId = cc.vv.UserData.get("roomId");
         cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.GM_SET_NOT_AUTO, [roomId, true]);
+        this.startTurn();
     },
+
     initPlayerObj(){
+        this._playerObjList = new Array();
+        var roleRoot = this.mapNode.getChildByName("roleRoot");
+        this.player0 = roleRoot.getChildByName("player0");
+        this.player1 = roleRoot.getChildByName("player1");
+        this._playerObjList.push(this.player0);
+        this._playerObjList.push(this.player1);
+
         for (var v of this._battleData.playerList){
             var view = v.figure;
             //cc.log("形象：" + view + " uid:" + v.uid);
@@ -91,6 +92,8 @@ var BattleMgr = cc.Class({
             //掉线上来从房间信息设置位置
             var pos = MapMgr.getPositionByGid(v.pos);
             this[view].setPosition(pos);
+            this[view].getComponent("RoleMgr").set("curPos", pos);
+            //cc.log("curPos:", pos);
         }
     },
     initMapHouseObj() {
@@ -98,15 +101,33 @@ var BattleMgr = cc.Class({
         if(this._mapGridTable === null) {
             this._mapGridTable = cc.vv.ConfigData.getConfigData("map_grid");
         }
-        for (var k in _tempLandsData) { 
-            this._mapHouseTable[k] = cc.instantiate(this._mapHouseMode);
-            var _housePos = MapMgr.getPositionByGid(k);
-            this._mapHouseTable[k].setPosition(_housePos);
-            this._mapHouseTable[k].getComponent("GameHouse").set("mapId", _tempLandsData[k].id);
-            this._mapHouseTable[k].getComponent("GameHouse").set("data", _tempLandsData[k]);
 
-            this._mapHouseTable[k].parent = this._mapHouseParent
-            this._mapHouseTable[k].active = true;
+        var _tempLandPosTable = [];
+        for (var k in _tempLandsData) {
+            var _housePos = MapMgr.getPositionByGid(_tempLandsData[k].id);
+            _tempLandPosTable.push({key: k, pos: _housePos});
+        }
+
+        //冒泡排序 排序出渲染顺序
+        for(var i = 0; i < _tempLandPosTable.length - 1; i++){
+            for(var j = 0; j < _tempLandPosTable.length - 1 - i; j++){
+                if(_tempLandPosTable[j].pos.y < _tempLandPosTable[j + 1].pos.y){
+                    var temp = _tempLandPosTable[j];
+                    _tempLandPosTable[j] = _tempLandPosTable[j + 1];
+                    _tempLandPosTable[j + 1] = temp;
+                }
+            }
+        }
+
+        for (var v of _tempLandPosTable) {
+            this._mapHouseTable[v.key] = cc.instantiate(this._mapHouseMode);
+            this._mapHouseTable[v.key].setPosition(v.pos);
+            this._mapHouseTable[v.key].getComponent("GameHouse").set("mapId", _tempLandsData[v.key].id);
+            this._mapHouseTable[v.key].getComponent("GameHouse").set("data", _tempLandsData[v.key]);
+            this._mapHouseTable[v.key].getComponent("GameHouse").set("mapFridData", this._mapGridTable[_tempLandsData[v.key] - 1]);
+
+            this._mapHouseTable[v.key].parent = this._mapHouseParent
+            this._mapHouseTable[v.key].active = true;
         }
     },
     startTurn(){
@@ -120,7 +141,7 @@ var BattleMgr = cc.Class({
 
         //不是自己的回合
         if(cc.vv.UserData.userId != this._curActorId) {
-            this._battleUI.showMoveBtn(false);
+            this._battleUI.showGoBtn(false);
             return;
         }
 
@@ -137,7 +158,7 @@ var BattleMgr = cc.Class({
             }
         }
         else{
-            this._battleUI.showMoveBtn(true);
+            this._battleUI.showGoBtn(true);
         }
     },
     //收到网络消息，压入队列
@@ -155,20 +176,24 @@ var BattleMgr = cc.Class({
         this._curActorId = data.actor;
         this._currentPlayer = this.getPlayerObjByUid(this._curActorId);
         this._battleUI.refreshActor(data.actor);
-        this._battleUI.showMoveBtn(this._curActorId == cc.vv.UserData.userId);
+        this._battleUI.showGoBtn(this._curActorId == cc.vv.UserData.userId);
         this.switchPlayerConversionPerspective();
     },
     //net 移动
     Move(data){
+        this._bTouch = false;
         this._bInCmd = true;
-        var paths = new Array();
-        var finallyLandId = data.path[data.path.length - 1];//测试
-        this._currentPlayer.getComponent("RoleMgr").set("finallyLandId", finallyLandId);//测试
+        var pathObjs = new Array();
         for(var v of data.path){
-            var pos = MapMgr.getPositionByGid(v);
-            paths.push(pos);
+            var p = MapMgr.getPositionByGid(v);
+            cc.log("格子=", v, "坐标=",p);
+            var pathOjb = {
+                id:v,
+                pos:p
+            }
+            pathObjs.push(pathOjb);
         }
-        this._currentPlayer.getComponent("RoleMgr").moveByPath(paths);
+        this._currentPlayer.getComponent("RoleMgr").moveByPath(pathObjs);
     },
 
     OnMoveEnd() {
@@ -188,14 +213,19 @@ var BattleMgr = cc.Class({
         this._battleUI.refreshDice(data.dice_point);
     },
     showBranch(branchs){
+        var posList = new Array;
         for(var i = 0; i < branchs.length; i ++){
             var branch = branchs[i];
             var len = branch.length;
             var lastPos = branch[len-1];
             var pos = MapMgr.getPositionByGid(lastPos);
-            this.mapNode.getChildByName("branch" + i).setPosition(pos);
-            this.mapNode.getChildByName("branch" + i).active = true;
+            cc.log("showBranch pos:", pos);
+            posList.push(pos);
+            // var arrows = this.mapNode.getChildByName("arrows_blue_" +i);
+            // arrows.setPosition(pos);
+            // arrows.active = true;
         }
+        this._battleUI.showBranchUI(posList);
     },
 
     AcquireHouse(data){
@@ -224,9 +254,8 @@ var BattleMgr = cc.Class({
 
     update(dt) {
         if (!this._bTurnStart) return;
-
         this.battleLoop();
-        if (this._bIsSwitchPlayer) return;
+        if (this._bIsSwitchPlayer || this._bTouch) return;
         this.fixPlayerInCenter();
     },
 

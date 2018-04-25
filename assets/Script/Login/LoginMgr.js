@@ -46,7 +46,21 @@ var LoginMgr = cc.Class({
     },
     //显示选服界面
     OnShowServerPanel(data) {
-        cc.vv.HttpMgr.logicUrl = data.addr;
+        //GM代码
+        var selectServerData = JSON.parse(cc.sys.localStorage.getItem('selectServerUrlData'));
+        var testAddr = null;
+        if(selectServerData) {
+            testAddr = selectServerData.selectServer;
+        }
+        cc.log("New_Addr: " + testAddr);
+        if(testAddr === null) {
+            cc.vv.HttpMgr.logicUrl = data.addr;
+        }
+        else {
+            cc.vv.HttpMgr.logicUrl = testAddr;
+        }
+
+        // cc.vv.HttpMgr.logicUrl = data.addr;
         cc.vv.HttpMgr.sendLogicRequest(cc.vv.Opcode.LOGIN);
     },
     OnLogin(data){

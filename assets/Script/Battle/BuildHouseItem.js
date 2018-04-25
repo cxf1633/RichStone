@@ -52,7 +52,7 @@ cc.Class({
             type: cc.Node
         },
 
-        _id: null,
+        _level: null,
         _buildingExpense: null,
         _needCircle: null,
     },
@@ -64,7 +64,13 @@ cc.Class({
     },
 
     updateItemInfo(_data, _landsData) {
-        this._id = _data.level;
+        this._level = _data.level;
+
+        var self = this;
+        cc.loader.loadRes("Atlas/BuildHouseUIAtlas/BuildHouseUIAtlas", cc.SpriteAtlas, function (err, atlas) {
+            self.houseLogo.spriteFrame = atlas.getSpriteFrame('MapPiece_' + _data.pic_id);
+        });
+
         this.houseTypeNameLabel.string = _data.name;
         this.costLabel.string = _data.pass_cost_times * _landsData.cost;
         this._buildingExpense = _data.lv_cost_times * _landsData.cost;
@@ -80,7 +86,11 @@ cc.Class({
                 this.conditionLabel.node.active = false;
                 this.haveBoughtLabel.node.active = false;
                 if(_playerData.money >= this._buildingExpense) {
+                    this.buildingExpenseLabel.node.color = new cc.Color(0, 0, 0);
                     this.onSelectHouseType();
+                }
+                else {
+                    this.buildingExpenseLabel.node.color = new cc.Color(255, 0, 0);
                 }
             }
             else {

@@ -30,7 +30,7 @@ var MapMgr = cc.Class({
         var cellY = oz.y/sz.height;
         var posX = this._mapPixWidth / 2 + (cellX - cellY) * this._cellWidth / 2;
         var posY = this._mapPixHeight - (cellX + cellY) * this._cellHeight / 2;
-        var pos = cc.p(posX, posY-40);
+        var pos = cc.p(posX, posY-this._cellHeight/2);
         //cc.log("pos = ", pos);
         return pos;
     },

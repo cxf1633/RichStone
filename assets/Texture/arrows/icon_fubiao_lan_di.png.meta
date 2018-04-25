@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "3406f516-cb4c-479e-8463-0ab9aba632e9",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "icon_fubiao_lan_di": {
+      "ver": "1.0.3",
+      "uuid": "9ffed211-fa0a-4faa-866a-ffd4807aad1d",
+      "rawTextureUuid": "3406f516-cb4c-479e-8463-0ab9aba632e9",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 74,
+      "height": 46,
+      "rawWidth": 74,
+      "rawHeight": 46,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

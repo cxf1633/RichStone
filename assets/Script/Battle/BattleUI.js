@@ -13,13 +13,15 @@ var BattleUI = cc.Class({
         roomId: cc.Label,
         nowPlayer:cc.Label,
         playerMoney: cc.Label,
-        moveBtn1: cc.Button,
-        moveBtn2: cc.Button,
-        moveBtn3:  cc.Button,
-        branch0: cc.Button,
-        branch1: cc.Button,
+        goBtn: cc.Button,
+        confirmBtn: cc.Button,
+        cancelBtn:  cc.Button,
+        arrowsBluePrefab: cc.Prefab,//预制体动态创建
+        arrowsYellow: cc.Sprite,
+        arrowsRoot: cc.Node,        //箭头根节点
         buildHouseUI: cc.Node,
     },
+    arrowsList:null,
     //1，第一个调用
     onLoad() {
         //cc.log("battle ui onLoad===>");
@@ -27,15 +29,24 @@ var BattleUI = cc.Class({
     start(){
         //cc.log("battle ui start===>");
 
-        cc.vv.Utils.addClickEvent(this.moveBtn1, this.node, "BattleUI", "onClick1");
-        cc.vv.Utils.addClickEvent(this.moveBtn2, this.node, "BattleUI", "onClick2");
-        cc.vv.Utils.addClickEvent(this.moveBtn3, this.node, "BattleUI", "onClick3");
-        cc.vv.Utils.addClickEvent(this.branch0, this.node, "BattleUI", "onClickBranch0");
-        cc.vv.Utils.addClickEvent(this.branch1, this.node, "BattleUI", "onClickBranch1");
-
-        cc.vv.MsgMgr.register(cc.vv.Opcode.BUY_HOUSE, this.OnOpenBulidHousePanel, this); //测试
+        cc.vv.Utils.addClickEvent(this.goBtn, this.node, "BattleUI", "onGo");
+        cc.vv.Utils.addClickEvent(this.confirmBtn, this.node, "BattleUI", "onConfirm");
+        cc.vv.Utils.addClickEvent(this.cancelBtn, this.node, "BattleUI", "onCancel");
+        cc.vv.MsgMgr.register(cc.vv.Opcode.BUY_HOUSE, this.OnOpenBulidHousePanel, this);
         
         this.owner = this.owner.getComponent('BattleMgr');
+
+        this.confirmBtn.node.active = false;
+        this.cancelBtn.node.active = false;
+
+        this.arrowPool = new cc.NodePool();
+        let initCount = 2;
+        for (let i = 0; i < initCount; ++i) {
+            let arrow = cc.instantiate(this.arrowsBluePrefab); // 创建节点
+            this.arrowPool.put(arrow); // 通过 putInPool 接口放入对象池
+        }
+        this.arrowsList = new Array;
+
         this.owner.LoadEnd();
     },
     updataRoomInfo(userData, battleData){
@@ -48,14 +59,14 @@ var BattleUI = cc.Class({
         // var data = battleData.getUserDataByUid(userData.userId);
         // //没有投过骰子并且是自己回合
         // if(!data.dice_over && userData.userId == battleData.curActor){
-        //     this.showMoveBtn(true);
+        //     this.showGoBtn(true);
         // }
         // else{
-        //     this.showMoveBtn(false);
+        //     this.showGoBtn(false);
         // }
     },
-    showMoveBtn(ret){
-        this.moveBtn1.node.active = ret;
+    showGoBtn(ret){
+        this.goBtn.node.active = ret;
     },
     //
     refreshTurn(str){
@@ -90,40 +101,77 @@ var BattleUI = cc.Class({
         this.scheduleOnce(timeCallback, 1);
         
     },
-    onClick1:function(){
-        cc.log("onClick1==>>");
+    onGo(){
+        this.closeTouch();
         cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.DICE, [1]);
-        this.showMoveBtn(false);
+        this.showGoBtn(false);
     },
-    onClick2:function(){
-        cc.log("onClick2==>>");
-        cc.vv.MsgMgr.dispatch(cc.vv.Opcode.TEST);
+
+    showBranchUI(posList){
+        for(var k in posList){
+            var p = posList[k];
+            let arrowObj = null;
+            if (this.arrowPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
+                cc.log("池中有空闲箭头对象");
+                arrowObj = this.arrowPool.get();
+            } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
+                cc.log("创建新的箭头对象");
+                arrowObj = cc.instantiate(this.arrowsBluePrefab);
+            }
+            arrowObj.parent = this.arrowsRoot; 
+            cc.vv.Utils.addClickEvent(arrowObj, this.node, "BattleUI", "onSelect");
+            arrowObj.setPosition(p);
+            arrowObj.active = true;
+            arrowObj.getComponent("ArrowItem").init(k, p);
+            this.arrowsList.push(arrowObj);
+        }
+        this.goBtn.node.active = false;
     },
-    onClick3:function(){
-        cc.log("onClick3==>>");
-        //cc.vv.SocketMgr.sendPackage("JoinRoom", 123, 456, "789");
-        //cc.vv.MsgMgr.remove("test", this.doTest2);
+    onSelect(event){
+        this.closeTouch();
+        for(var v of this.arrowsList){
+            v.active = false;
+        }
+        this.selectObj = event.target;
+        var arrowPos = this.selectObj.getPosition();
+        cc.log("onSelect pos =", arrowPos);
+        this.arrowsYellow.node.setPosition(arrowPos);
+        this.arrowsYellow.node.active = true;
+        this.confirmBtn.node.active = true;
+        this.cancelBtn.node.active = true;
     },
-    onClickBranch0:function(){
-        cc.log("onClickBranch0==>>");
-        cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.CHOOSE_BRANCH, [0]);
-        this.branch0.node.active = false;
-        this.branch1.node.active = false;
+    onConfirm(){
+        this.closeTouch();
+        this.confirmBtn.node.active = false;
+        this.cancelBtn.node.active = false;
+        this.arrowsYellow.node.active = false;
+       
+        var selectBranch = this.selectObj.getComponent("ArrowItem").key;
+        cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.CHOOSE_BRANCH, [parseInt(selectBranch)]); 
+         //对象放回池
+         for(var v of this.arrowsList){
+            this.arrowPool.put(v); 
+        }
+        this.arrowsList = [];
     },
-    onClickBranch1:function(){
-        cc.log("onClickBranch1==>>");
-        cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.CHOOSE_BRANCH, [1]); 
-        this.branch0.node.active = false;
-        this.branch1.node.active = false;
+    onCancel(){
+        this.closeTouch();
+        for(var v of this.arrowsList){
+            v.active = true;
+        }
+        this.arrowsYellow.node.active = false;
+        this.confirmBtn.node.active = false;
+        this.cancelBtn.node.active = false;
     },
-    
-    OnOpenBulidHousePanel: function(_landsData) {
+    OnOpenBulidHousePanel(_landsData) {
         if(this.buildHouseUI.active == false) {
             this.buildHouseUI.getComponent("BuildHouseUI").openAndUpdatePanel(_landsData);
         }
     },
-
-    onDestroy:function(){
+    closeTouch(){
+        //this.owner._bTouch = false;
+    },
+    onDestroy(){
         cc.log("battleui onDestroy");
         cc.vv.MsgMgr.remove(cc.vv.Opcode.BUY_HOUSE, this.OnOpenBulidHousePanel);
     },

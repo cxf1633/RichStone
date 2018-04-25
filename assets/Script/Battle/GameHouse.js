@@ -2,38 +2,18 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        uidLabel: {
-            default: null,
-            type: cc.Label
-        },
+        tollLabel: cc.Label,
+        campFrameSprite: cc.Sprite,
+        houseSprite: cc.Sprite,
+        newHouseSprite: cc.Sprite,
 
-        lvLabel: {
-            default: null,
-            type: cc.Label
-        },
-
-        tollLabel: {
-            default: null,
-            type: cc.Label
-        },
-
-        houseSprite: {
-            default: null,
-            type: cc.Sprite
-        },
-
-        newHouseSprite: {
-            default: null,
-            type: cc.Node
-        },
+        _gridLvData: null, //grid_lv表数据
     },
 
     start () {
-        // 层级设置
-        // this.houseSprite.node.zIndex = 1;
-        // this.newHouseSprite.zIndex = 2;
-        // this.uidLabel.node.zIndex = 3;
-        // this.lvLabel.node.zIndex = 3;
+        if(this._gridLvData === null) {
+            this._gridLvData = cc.vv.ConfigData.getConfigData("grid_lv");
+        }
     },
 
     get:function(name){
@@ -41,27 +21,51 @@ cc.Class({
     },
 
     set:function(name, value){
+        var self = this;
         this[name] = value;
         if(name === "data") {
-            this.uidLabel.string = "UId: " + value["owner_id"];
-            var _testLabel = value["lv"];
-            if(_testLabel === -1) {
-                _testLabel = "无";
+            if(value.camp === 0) {
+                this.campFrameSprite.node.active = false;
             }
-            this.lvLabel.string = "等级: " + _testLabel;
-            //this.tollLabel.string = "过路费: 0";
+            else {
+                if(!this.campFrameSprite.node.active) {
+                    this.campFrameSprite.node.active = true;
+                }
+                cc.loader.loadRes("Atlas/BuildHouseUIAtlas/BuildHouseUIAtlas", cc.SpriteAtlas, function (err, atlas) {
+                    self.campFrameSprite.spriteFrame = atlas.getSpriteFrame("battle_campFrame_" + value.camp);
+                });
+            }
+            
+            // this.tollLabel.string = "过路费: 0";
+
+            cc.loader.loadRes("Atlas/BuildHouseUIAtlas/BuildHouseUIAtlas", cc.SpriteAtlas, function (err, atlas) {
+                var _spriteName = "MapPiece_0";
+                if(value.lv >= 0) {
+                    _spriteName = "MapPiece_" + self._gridLvData[value.lv].pic_id;
+                }
+                self.houseSprite.spriteFrame = atlas.getSpriteFrame(_spriteName);
+            });
         }
     },
 
     upgradeHouse:function(name, value) {
-        var _pos = this.newHouseSprite.position;
-        this.newHouseSprite.active = true;
-        
-        var moveAction = cc.moveTo(0.5, cc.p(0, 0));
-        var callback = cc.callFunc(function() {
-            this.set(name, value);
-            this.newHouseSprite.active = false;
-        }, this);
-        this.newHouseSprite.runAction(cc.sequence(moveAction, callback));
-    }
+        var _pos = this.newHouseSprite.node.position;
+        this.newHouseSprite.node.active = true;
+
+        var self = this;
+        cc.loader.loadRes("Atlas/BuildHouseUIAtlas/BuildHouseUIAtlas", cc.SpriteAtlas, function (err, atlas) {
+            var _testName = 'MapPiece_' + self._gridLvData[value.lv].pic_id;
+            var frame = atlas.getSpriteFrame(_testName);
+            self.newHouseSprite.spriteFrame = frame;
+
+            var moveAction = cc.moveTo(0.5, cc.p(0, 0));
+            var callback = cc.callFunc(function() {
+                self.set(name, value);
+                self.newHouseSprite.node.active = false;
+                self.houseSprite.spriteFrame = frame;
+                self.newHouseSprite.node.position = _pos;
+            }, self);
+            self.newHouseSprite.node.runAction(cc.sequence(moveAction, callback));
+        });
+    },
 });
