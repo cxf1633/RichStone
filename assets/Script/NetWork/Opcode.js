@@ -22,6 +22,12 @@ Opcode = {
     UPDATE_MONEY:"UpdateMoney", //更新金币
     BUYHOUSE:"BuyHouse",
     ACQUIREHOUSE:"AcquireHouse",
+    BATTLE_END:"BattleEnd", //游戏结束
+    EVENT_EFFECT:"EventEffect", //事件效果
+    ADD_TRIGGER:"AddTrigger",    //添加触发器
+    DEL_TRIGGER:"DelTrigger",    //删除触发器
+    AT_STATUS:"AtStatus",    //删除触发器
+    
     
 
     GM_CLOSE_ROOM:"GMCloseRoom",//GMCloseRoom 参数 roomID 关闭一个战斗中的房间
@@ -33,16 +39,21 @@ Opcode = {
     ENTER_MAIN:"Enter_Main",//进入主界面
     CONNECT_SOCKET_SUCCESS:"Connetct_Socket_Success",//连接webscket成功
     INIT_DATA_OVER : "InitDataOver",//主城数据初始化完成通知
+
     ROUND: "Round",
     PLAYER_MOVE:"PlayerMove",
     EVENT_DISPOSE:"Event_Dispose",
+    NET_EVENT_DISPOSE:"Net_Event_Dispose",
+
+
+
     MOVE_END:"MoveEnd",
 
     ENTER_BATTLE:"Enter_Battle",//进入战斗
     SHOW_BRANCH:"Show_Branch",  //显示可选路劲
     MOVE_ONE:"Move_One",
     BUY_HOUSE:"Buy_House", // 购买房子
-    
+    SELECT_GID:"Select_Gid",    //选地格
     
     TEST:"Test",
 };

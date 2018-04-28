@@ -17,18 +17,22 @@ var RoleMgr = cc.Class({
     },
     initData(data){
         this.uid = data.uid;
-        this.name = data.name;
         this.curGid = data.pos; //地图格子
-        this.energy = data.energy;
-        this.circle = data.circle;
-        this.money = data.money;
         this.figure = data.figure;
-        this.camp = data.camp;
-        this.dice_end = data.dice_end;
-        this.branches = data.branches;
+
+
+
+        // this.diceEnd = data.dice_end;
+        // this.branches = data.branches;
+        // this.name = data.name;
+        // this.energy = data.energy;
+        // this.camp = data.camp;
+        // this.money = data.money;
+        // this.circle = data.circle;
+
     },
     moveByPath(pathObjs){
-        if(!pathObjs || !pathObjs[0]){
+        if(pathObjs == null || pathObjs[0] == null){
             cc.log("RoleMgr moveByPath paths = null");
             return;
         }

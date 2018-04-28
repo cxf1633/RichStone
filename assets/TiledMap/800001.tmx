@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="isometric" renderorder="right-down" width="16" height="16" tilewidth="140" tileheight="80" nextobjectid="577">
+<map version="1.0" tiledversion="1.0.3" orientation="isometric" renderorder="right-down" width="16" height="16" tilewidth="140" tileheight="80" nextobjectid="584">
  <tileset firstgid="1" name="dikuai" tilewidth="140" tileheight="80" tilecount="4" columns="2">
   <image source="dikuai.png" width="281" height="160"/>
  </tileset>
@@ -287,20 +287,14 @@
   <object id="527" name="52" x="1040" y="880" width="80" height="80"/>
   <object id="528" name="53" x="1040" y="800" width="80" height="80"/>
   <object id="529" name="54" x="1040" y="720" width="80" height="80"/>
-  <object id="530" name="55" x="1040" y="640" width="80" height="80"/>
-  <object id="531" name="56" x="1120" y="640" width="80" height="80"/>
-  <object id="532" name="57" x="1040" y="560" width="80" height="80"/>
-  <object id="533" name="58" x="1120" y="560" width="80" height="80"/>
+  <object id="530" name="55" x="1040" y="560" width="160" height="160"/>
   <object id="534" name="59" x="1040" y="480" width="80" height="80"/>
   <object id="535" name="60" x="1040" y="400" width="80" height="80"/>
   <object id="536" name="61" x="1040" y="320" width="80" height="80"/>
   <object id="537" name="62" x="880" y="160" width="80" height="80"/>
   <object id="538" name="63" x="800" y="160" width="80" height="80"/>
   <object id="539" name="64" x="720" y="160" width="80" height="80"/>
-  <object id="540" name="65" x="640" y="160" width="80" height="80"/>
-  <object id="541" name="66" x="640" y="80" width="80" height="80"/>
-  <object id="542" name="67" x="560" y="160" width="80" height="80"/>
-  <object id="543" name="68" x="560" y="80" width="80" height="80"/>
+  <object id="540" name="65" x="560" y="80" width="160" height="160"/>
   <object id="544" name="69" x="480" y="160" width="80" height="80"/>
   <object id="545" name="70" x="400" y="160" width="80" height="80"/>
   <object id="546" name="71" x="320" y="160" width="80" height="80"/>
@@ -311,27 +305,27 @@
   <object id="551" name="76" x="160" y="640" width="80" height="80"/>
   <object id="552" name="77" x="160" y="720" width="80" height="80"/>
   <object id="553" name="78" x="160" y="800" width="80" height="80"/>
-  <object id="554" name="80" x="320" y="800" width="80" height="80"/>
-  <object id="555" name="81" x="400" y="800" width="80" height="80"/>
-  <object id="556" name="82" x="320" y="880" width="80" height="80"/>
-  <object id="557" name="83" x="400" y="880" width="80" height="80"/>
-  <object id="558" name="84" x="560" y="880" width="80" height="80"/>
-  <object id="559" name="85" x="640" y="880" width="80" height="80"/>
-  <object id="560" name="86" x="720" y="880" width="80" height="80"/>
-  <object id="561" name="87" x="800" y="1040" width="80" height="80"/>
-  <object id="562" name="88" x="880" y="1040" width="80" height="80"/>
-  <object id="563" name="89" x="720" y="720" width="80" height="80"/>
-  <object id="564" name="90" x="640" y="640" width="80" height="80"/>
-  <object id="565" name="91" x="560" y="640" width="80" height="80"/>
-  <object id="566" name="92" x="480" y="480" width="80" height="80"/>
-  <object id="567" name="93" x="480" y="400" width="80" height="80"/>
-  <object id="568" name="94" x="480" y="320" width="80" height="80"/>
-  <object id="569" name="95" x="640" y="480" width="80" height="80"/>
-  <object id="570" name="96" x="720" y="480" width="80" height="80"/>
-  <object id="572" name="97" x="640" y="400" width="80" height="80"/>
-  <object id="573" name="98" x="720" y="400" width="80" height="80"/>
-  <object id="574" name="99" x="800" y="560" width="80" height="80"/>
-  <object id="575" name="100" x="880" y="640" width="80" height="80"/>
+  <object id="554" name="80" x="320" y="800" width="160" height="160"/>
+  <object id="558" name="82" x="560" y="1040" width="80" height="80"/>
+  <object id="559" name="83" x="640" y="1040" width="80" height="80"/>
+  <object id="560" name="84" x="720" y="880" width="80" height="80"/>
+  <object id="561" name="85" x="800" y="1040" width="80" height="80"/>
+  <object id="562" name="86" x="880" y="1040" width="80" height="80"/>
+  <object id="563" name="92" x="720" y="720" width="80" height="80"/>
+  <object id="564" name="93" x="640" y="640" width="80" height="80"/>
+  <object id="565" name="94" x="560" y="640" width="80" height="80"/>
+  <object id="566" name="98" x="480" y="480" width="80" height="80"/>
+  <object id="567" name="99" x="480" y="400" width="80" height="80"/>
+  <object id="568" name="100" x="480" y="320" width="80" height="80"/>
+  <object id="569" name="97" x="640" y="400" width="160" height="160"/>
+  <object id="574" name="96" x="800" y="560" width="80" height="80"/>
+  <object id="575" name="95" x="880" y="640" width="80" height="80"/>
   <object id="576" name="79" x="160" y="880" width="80" height="80"/>
+  <object id="577" name="88" x="560" y="800" width="80" height="80"/>
+  <object id="578" name="89" x="320" y="640" width="80" height="80"/>
+  <object id="579" name="90" x="400" y="640" width="80" height="80"/>
+  <object id="580" name="91" x="480" y="640" width="80" height="80"/>
+  <object id="581" name="87" x="560" y="880" width="80" height="80"/>
+  <object id="583" name="81" x="480" y="1040" width="80" height="80"/>
  </objectgroup>
 </map>

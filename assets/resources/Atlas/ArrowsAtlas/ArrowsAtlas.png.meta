@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "615c1a44-2da2-4c03-a69e-cd70ea83e477",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "ArrowsAtlas": {
+      "ver": "1.0.3",
+      "uuid": "989ae569-1966-4c05-afdf-119e23bac67a",
+      "rawTextureUuid": "615c1a44-2da2-4c03-a69e-cd70ea83e477",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -406,
+      "offsetY": 458,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 208,
+      "height": 104,
+      "rawWidth": 1024,
+      "rawHeight": 1024,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

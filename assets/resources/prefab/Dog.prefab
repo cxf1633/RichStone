@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "arrowYellow",
+    "_name": "Dog",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -20,13 +20,9 @@
     ],
     "_tag": -1,
     "_active": false,
-    "_components": [
-      {
-        "__id__": 5
-      }
-    ],
+    "_components": [],
     "_prefab": {
-      "__id__": 6
+      "__id__": 5
     },
     "_id": "",
     "_opacity": 255,
@@ -45,8 +41,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 76,
-      "height": 48
+      "width": 0,
+      "height": 0
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -66,7 +62,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "arrows",
+    "_name": "Label",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -95,12 +91,12 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0
+      "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 54,
-      "height": 60
+      "width": 51,
+      "height": 40
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -109,7 +105,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 10
+      "y": 8
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -119,32 +115,26 @@
     "groupIndex": 0
   },
   {
-    "__type__": "cc.Sprite",
+    "__type__": "cc.Label",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 2
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "71da5267-9ed8-490d-b2a5-44fd555e966c"
-    },
-    "_type": 0,
-    "_sizeMode": 1,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "bf438b76-8282-4be3-9cf1-6605c606a7b8"
-    }
+    "_useOriginalSize": false,
+    "_actualFontSize": 40,
+    "_fontSize": 40,
+    "_lineHeight": 0,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_N$string": "汪!",
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -152,48 +142,20 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "e4202fb2-6cd7-4120-a4bf-d2f4cc7cbee5"
+      "__id__": 0
     },
-    "fileId": "a7RWikI6JE2ZxX0iHn6Mrn",
+    "fileId": "0eQ1kXu6tNJo0T8xWghZAF",
     "sync": false
   },
   {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "94f640c9-dc21-4f2e-8272-64eb1e13517a"
-    },
-    "_type": 0,
-    "_sizeMode": 1,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "bf438b76-8282-4be3-9cf1-6605c606a7b8"
-    }
-  },
-  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "e4202fb2-6cd7-4120-a4bf-d2f4cc7cbee5"
+      "__id__": 0
     },
-    "fileId": "3bs3Iys1NK3bRrDvonA02G",
+    "fileId": "c9mfb4Or1BM6PHQ0+Dc+/h",
     "sync": false
   }
 ]

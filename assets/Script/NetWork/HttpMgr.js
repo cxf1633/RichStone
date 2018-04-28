@@ -15,6 +15,8 @@ var HttpMgr = {
     uid: null,
     timeout: 5000,
 
+    specialAddr: "192.168.199.113:12018",
+
     //
     sendHttpRequest(servertype, cmd, dataArray){
         var xhr = cc.loader.getXMLHttpRequest();

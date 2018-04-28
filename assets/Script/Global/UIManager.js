@@ -69,10 +69,10 @@ var UIManager = {
 
 
     destroyNode: function(_name) {
-        cc.log("销毁: " + _name)
+        //cc.log("销毁: " + _name)
         for (var key in this._uiPrefabTabel) {
             if(key === _name && this._uiPrefabTabel[key] !== undefined) {
-                cc.log("销毁: " + _name + "成功")
+                //cc.log("销毁: " + _name + "成功")
                 this._uiPrefabTabel[key] = undefined;
             }
         }

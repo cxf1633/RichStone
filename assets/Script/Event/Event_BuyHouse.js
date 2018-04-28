@@ -5,7 +5,7 @@ var Event_BuyHouse = {
         this.BattleMgr = battleMgr;
     },
     executeEvent(){
-        cc.log("Event_BuyHouse");
+        cc.log("Event_BuyHouse:", this.BattleMgr._currentPlayer.name);
         var roleMgr = this.BattleMgr._currentPlayer.getComponent("RoleMgr");
         if(roleMgr.get("uid") != cc.vv.UserData.userId){
             cc.log("不是自己回合，跳过");
@@ -30,7 +30,10 @@ var Event_BuyHouse = {
             return;
         }    
         //圈数不满足
-        if(roleMgr.get("circle") < landData.lv) {
+        //cc.log("要求等级：",  landData.lv);
+        var playerData = cc.vv.BattleData.getDataByUid(cc.vv.UserData.userId);
+        //cc.log("玩家圈数：",  playerData.circle, playerData.name);
+        if(playerData.circle < landData.lv) {
             cc.vv.Tooltip.show("圈数不足,不能购买");
             this.BattleMgr.OnMoveEnd();
             return;
@@ -39,7 +42,9 @@ var Event_BuyHouse = {
         var gridLv = gridLvList[landData.lv + 1];
         if(gridLv.is_landmark == 0) {
             var lvCost = gridLv.lv_cost_times * mapGrid.cost;
-            if(roleMgr.get("money") >= lvCost) {
+            // cc.log("要求金钱：", lvCost);
+            // cc.log("玩家金钱：",  playerData.money, playerData.name);
+            if(playerData.money >= lvCost) {
                 cc.vv.MsgMgr.dispatch(cc.vv.Opcode.BUY_HOUSE, mapGrid);
             }
             else {

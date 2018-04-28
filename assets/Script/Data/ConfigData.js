@@ -50,12 +50,78 @@ var ConfigData = cc.Class({
 
     initData(alldata){
         this.allData = alldata;
-        //var alldata = JSON.parse(txt);
-        // cc.log("正在读取配置表【配置表版本："+alldata["config_version"][0].version+"】");
-
-        // cc.log(alldata["achievement"][0].desc);
-
+        for (const key in alldata) {
+            if (alldata.hasOwnProperty(key)) {
+                this[key] = {};
+                var tableData = alldata[key];
+                if (tableData.length == 0 ) {
+                    cc.log("表没有数据：", key);
+                    continue;
+                }
+                if(tableData[0].id == undefined){
+                    var funcName = "init_"+ key;
+                    if(this[funcName]){
+                        this[funcName].call(this, key, alldata)
+                    }
+                    else{
+                        cc.log("主key不是id的表找不到初始化函数>>>>>>>：", funcName);
+                    }
+                }
+                else{
+                    this.initById(key, tableData);
+                }
+            }
+        }
+        cc.log("数据库加载完成！");
     },
+    //主key是id的表
+    initById(key, tableData){
+        for (const data of tableData) {
+            if (data.id == undefined) {
+                cc.log("初始化表：", key, "失败>>>>>>>>>>>!!!");
+                return;
+            }
+            this[key][data.id] = data;
+        }
+        cc.log("初始化init表：", key, "成功！");
+    },
+    init_global_var(key, alldata){
+        for (const data of alldata[key]) {
+            if (data.k == undefined) {
+                cc.log("初始化表：", key, "失败>>>>>>>>>>>!!!");
+                return;
+            }
+            this[key][data.k] = data;
+        }
+        cc.log("初始化表：", key, "成功！");
+    },
+    init_grid_lv(key, alldata){
+        for (const data of alldata[key]) {
+            if (data.level == undefined) {
+                cc.log("初始化表：", key, "失败>>>>>>>>>>>!!!");
+                return;
+            }
+            this[key][data.level] = data;
+        }
+        cc.log("初始化表：", key, "成功！");
+    },
+
+    init_map_grid(key, alldata){
+        for (const data of alldata[key]) {
+            if (data.map_scene_id == undefined) {
+                cc.log("初始化表：", key, "失败>>>>>>>>>>>!!!");
+                return;
+            }
+            if (this[key][data.map_scene_id] == undefined) {
+                this[key][data.map_scene_id] = {};
+            }
+            this[key][data.map_scene_id][data.grid_id] = data;
+        }
+        cc.log("初始化表：", key, "成功！");
+    },
+
+
+
 
     getConfigData(_tableName, _key, _fieldName) {
         if(_tableName !== undefined && _key !== undefined && _fieldName !== undefined) {

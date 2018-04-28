@@ -122,6 +122,13 @@ var SocketMgr = cc.Class({
             //if(cmd==SVRCMD.Time) return;
         }
     },
+    
+    sendPackageGM(sendstr){
+        if(this.isConnected()){
+            cc.log("WebSocket发送GM数据:\n"+ sendstr);
+        this._socket.send(sendstr);
+        }       
+    },
 });
 
 module.exports = SocketMgr

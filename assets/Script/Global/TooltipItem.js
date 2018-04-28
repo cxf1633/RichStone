@@ -24,7 +24,7 @@ cc.Class({
         this.itemLabel.string = _label;
         this.bg.width = this.itemLabel.node.width + 20;
 
-        var moveAction = cc.moveTo(1, cc.p(0, 100));
+        var moveAction = cc.moveTo(2, cc.p(0, 150));
         var callback = cc.callFunc(function(){
             this._owner.onCloseFrame();
         }, this);

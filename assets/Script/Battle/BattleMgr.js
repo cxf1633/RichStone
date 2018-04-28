@@ -21,8 +21,13 @@ var BattleMgr = cc.Class({
         _gridLvDataTable: null, //grid_lv表数据
         _mapGridTable: null,    //map_grid表数据
         _mapHouseTable: [],
+        _mapTriggerTable: [],
         _mapHouseMode: null,
         _mapHouseParent: null,
+
+        _mapDog: null,
+        _mapGodOfWealth: null,
+        _mapGodOfEarth: null,
         //
         mapNode: cc.Node,
     },
@@ -39,37 +44,47 @@ var BattleMgr = cc.Class({
         cc.vv.MsgMgr.register(cc.vv.Opcode.NEW_CIRCLE, this.OnPushNetCmd, this);
         cc.vv.MsgMgr.register(cc.vv.Opcode.UPDATE_MONEY, this.OnPushNetCmd, this);
         cc.vv.MsgMgr.register(cc.vv.Opcode.ACQUIREHOUSE, this.OnPushNetCmd, this);
-
+        cc.vv.MsgMgr.register(cc.vv.Opcode.BATTLE_END, this.OnPushNetCmd, this);
+        cc.vv.MsgMgr.register(cc.vv.Opcode.EVENT_EFFECT, this.OnPushNetCmd, this);
+        cc.vv.MsgMgr.register(cc.vv.Opcode.ADD_TRIGGER, this.OnPushNetCmd, this);
+        cc.vv.MsgMgr.register(cc.vv.Opcode.DEL_TRIGGER, this.OnPushNetCmd, this);
+        cc.vv.MsgMgr.register(cc.vv.Opcode.AT_STATUS, this.OnPushNetCmd, this);
+        
         //自定义消息立即执行
         cc.vv.MsgMgr.register(cc.vv.Opcode.MOVE_END, this.OnMoveEnd, this);
+        cc.vv.MsgMgr.register(cc.vv.Opcode.SELECT_GID, this.OnSelectGid, this);
 
         //初始化地图信息
         var tmxMap = this.mapNode.getComponent('cc.TiledMap');
         MapMgr.init(tmxMap);
+        this.MapMgr = MapMgr;
 
         //地块控件
+        this._mapDog = this.mapNode.getChildByName("Dog");
+        this._mapGodOfWealth = this.mapNode.getChildByName("GodOfWealth");
+        this._mapGodOfEarth = this.mapNode.getChildByName("GodOfEarth");
+
         this._mapHouseMode = this.mapNode.getChildByName("House");
         this._mapHouseParent = this.mapNode.getChildByName("houseParent");
 
-        //地图信息
+        //战斗数据
         this._battleData = new BattleData();
         this._battleData.initRoomData(cc.vv.UserData.get("roomInfo"));
         cc.vv.BattleData = this._battleData;
 
         //初始化角色
         this.initPlayerObj();
-
         //初始化房子
         this.initMapHouseObj();
-
-        //刷新UI 
-        this._battleUI = this.node.getChildByName("BattleUI").getComponent("BattleUI");
-        this._battleUI.updataRoomInfo(cc.vv.UserData, this._battleData);
-
-
+        //初始化触发事件地块
+        this.initTriggersObj();
+    
     },
     //UI调用
     LoadEnd(){
+        //刷新UI 
+        this._battleUI = this.node.getChildByName("BattleUI").getComponent("BattleUI");
+        this._battleUI.updataRoomInfo(cc.vv.UserData, this._battleData);
         //发送加载完成
         cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.LOAD_END);
         var roomId = cc.vv.UserData.get("roomId");
@@ -84,8 +99,8 @@ var BattleMgr = cc.Class({
         this.player1 = roleRoot.getChildByName("player1");
         this._playerObjList.push(this.player0);
         this._playerObjList.push(this.player1);
-
-        for (var v of this._battleData.playerList){
+        for (var uid in this._battleData.playerDatas) {  
+            var v = this._battleData.playerDatas[uid];
             var view = v.figure;
             //cc.log("形象：" + view + " uid:" + v.uid);
             this[view].getComponent("RoleMgr").initData(v);
@@ -94,8 +109,10 @@ var BattleMgr = cc.Class({
             this[view].setPosition(pos);
             this[view].getComponent("RoleMgr").set("curPos", pos);
             //cc.log("curPos:", pos);
-        }
+            this._myPlayer = this.getPlayerObjByUid(cc.vv.UserData.userId);
+        }  
     },
+
     initMapHouseObj() {
         var _tempLandsData = this._battleData.lands;
         if(this._mapGridTable === null) {
@@ -125,13 +142,32 @@ var BattleMgr = cc.Class({
             this._mapHouseTable[v.key].getComponent("GameHouse").set("mapId", _tempLandsData[v.key].id);
             this._mapHouseTable[v.key].getComponent("GameHouse").set("data", _tempLandsData[v.key]);
             this._mapHouseTable[v.key].getComponent("GameHouse").set("mapFridData", this._mapGridTable[_tempLandsData[v.key] - 1]);
-
             this._mapHouseTable[v.key].parent = this._mapHouseParent
             this._mapHouseTable[v.key].active = true;
         }
     },
+
+    initTriggersObj() {
+        var _tempTriggersData = this._battleData.triggers;
+        
+        for (var k in _tempTriggersData) {
+            var _k = Number(k);
+
+            var tempTriggerObj = this._getTriggerObj(_tempTriggersData[k].id);
+            if(tempTriggerObj === null) {
+                cc.log("错误: 触发器类型未找到!!!!!!!!!")
+                return
+            }
+
+            this._mapTriggerTable[_k] = tempTriggerObj;
+            this._mapTriggerTable[_k].setPosition(MapMgr.getPositionByGid(_k));
+            this._mapTriggerTable[_k].parent = this._mapHouseParent;
+            this._mapTriggerTable[_k].active = true;
+        }
+    },
+
     startTurn(){
-        if(this._battleData.status != 2 ){
+        if(this._battleData.status !== 2 ){
             cc.log("房间还没有开启");
         }
 
@@ -144,13 +180,12 @@ var BattleMgr = cc.Class({
             this._battleUI.showGoBtn(false);
             return;
         }
-
-        var gameRole = this._currentPlayer.getComponent("RoleMgr");
+        var playerData = cc.vv.BattleData.getDataByUid(cc.vv.UserData.userId);
         //掉线上来如果已经投过骰子
-        if(gameRole.get("dice_end") ){
+        if(playerData.dice_end ){
             //岔路选择
-            if(gameRole.get("branches")){
-                this.showBranch(gameRole.get("branches"));
+            if(playerData.branches){
+                this.showBranch(playerData.branches);
             }
             //没有岔路发送消息
             else{
@@ -186,7 +221,7 @@ var BattleMgr = cc.Class({
         var pathObjs = new Array();
         for(var v of data.path){
             var p = MapMgr.getPositionByGid(v);
-            cc.log("格子=", v, "坐标=",p);
+            //cc.log("格子=", v, "坐标=",p);
             var pathOjb = {
                 id:v,
                 pos:p
@@ -212,22 +247,34 @@ var BattleMgr = cc.Class({
         this._battleData.setData("dicePoint", data.dice_point);
         this._battleUI.refreshDice(data.dice_point);
     },
+    //选路
     showBranch(branchs){
         var posList = new Array;
         for(var i = 0; i < branchs.length; i ++){
             var branch = branchs[i];
             var len = branch.length;
-            var lastPos = branch[len-1];
-            var pos = MapMgr.getPositionByGid(lastPos);
-            cc.log("showBranch pos:", pos);
-            posList.push(pos);
-            // var arrows = this.mapNode.getChildByName("arrows_blue_" +i);
-            // arrows.setPosition(pos);
-            // arrows.active = true;
+            var lastGid = branch[len-1];
+            var p = MapMgr.getPositionByGid(lastGid);
+            var obj = {
+                gid:i,//存的是数组id
+                pos:p
+            }
+            posList.push(obj);
         }
-        this._battleUI.showBranchUI(posList);
+        this._battleUI.showGridSelect(posList);
+        //先做个标识 待优化
+        this.isSelectBranch = true;
     },
-
+    OnSelectGid(gid){
+        if(this.isSelectBranch){
+            cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.CHOOSE_BRANCH, [parseInt(gid)]); 
+            this.isSelectBranch = false;
+        }
+        else if(this.isUseCard){
+            cc.vv.SocketMgr.sendPackage("UseSkillCard", [this.useCardUid, parseInt(gid)]);
+            this.isUseCard = false;
+        }
+    },
     AcquireHouse(data){
         this._battleData.setlandState(data.id, data);
         this._mapHouseTable[data.id].getComponent("GameHouse").upgradeHouse("data", data);
@@ -239,19 +286,80 @@ var BattleMgr = cc.Class({
 
     // 新的一圈
     NewCircle(data) {
-        this._battleData.setUserDataByUid(data.uid, "circle", data.circle);
+        this._battleData.setDataByUid(data.uid, "circle", data.circle);
     },
 
     //更新金钱
     UpdateMoney(data) {
+        var _currentMoney = this._battleData.getDataByUid(cc.vv.UserData.userId).money;
         for (var k in data) {
+            this._battleData.setDataByUid(k, "money", data[k]);
             if(cc.vv.UserData.userId == k) {
-                this._battleUI.refreshMoney(data[k], this._battleData.getUserDataByUid(k).money);
+                this._battleUI.refreshMoney(data[k], _currentMoney);
             }
-            this._battleData.setUserDataByUid(k, "money", data[k]);
         }
     },
+    EventEffect(data){
+        cc.vv.MsgMgr.dispatch(cc.vv.Opcode.NET_EVENT_DISPOSE, data);
+    },
+    AddTrigger(data){
+        cc.log("添加触发器");
 
+        if(this._mapTriggerTable[data.pos] == null) {
+            var tempTriggerObj = this._getTriggerObj(data.trigger.id);
+            if(tempTriggerObj === null) {
+                cc.log("错误: 触发器类型未找到!!!!!!!!!")
+                return
+            }
+            this._mapTriggerTable[data.pos] = tempTriggerObj;
+            this._mapTriggerTable[data.pos].setPosition(MapMgr.getPositionByGid(data.pos));
+            this._mapTriggerTable[data.pos].parent = this._mapHouseParent;
+            this._mapTriggerTable[data.pos].active = true;
+        }
+    },
+    DelTrigger(data){
+        cc.log("删除触发器");
+
+        if(this._mapTriggerTable[data.pos] != null) {
+            cc.log("要删除的触发器不为空")
+            this._mapTriggerTable[data.pos].destroy();
+            this._mapTriggerTable[data.pos] = null;
+        }
+    },
+    _getTriggerObj(id) {
+        if(id === 1001) {
+            return cc.instantiate(this._mapGodOfWealth);
+        }
+        else if(id === 1002) {
+            return cc.instantiate(this._mapGodOfEarth);
+        }
+        else if(id === 1003) {
+            return cc.instantiate(this._mapDog);
+        }
+        return null;
+    },
+  	AtStatus(data){
+        let name = "";
+        if(data.status == 0){// 没有在任何地方
+            return;
+        }
+        else if(data.status == 1){// 医院
+            name = "医院"
+        }
+        else if(data.status == 2){// 监狱
+            name = "监狱"
+        }
+        else if(data.status == 3){// 度假村
+            name = "度假村"
+        }
+        let str = "玩家:"+data.uid +"处于" + name + "状态！ 剩余回合：" + data.rest_turn;
+        cc.vv.Tooltip.show(str);
+    },
+    BattleEnd(data){
+        cc.vv.PopupManager.showPopup("提示", "游戏结束 胜者: UID" + data.winner, 
+            function(){cc.director.loadScene("mainScene");}, 
+            function(){cc.director.loadScene("mainScene");});
+    },
     update(dt) {
         if (!this._bTurnStart) return;
         this.battleLoop();
@@ -302,7 +410,16 @@ var BattleMgr = cc.Class({
             var v = this._playerObjList[i];
             var vuid = v.getComponent("RoleMgr").get("uid");
             if(vuid == uid){
-            return v;
+                return v;
+            }
+        }
+    },
+    getPlayerObjBoomPos(){
+        for (var i = 0; i < this._playerObjList.length; i++) {
+            var v = this._playerObjList[i];
+            var vuid = v.getComponent("RoleMgr").get("uid");
+            if(vuid != cc.vv.UserData.userId){
+                return v.getComponent("RoleMgr").curGid;
             }
         }
     },
@@ -317,5 +434,10 @@ var BattleMgr = cc.Class({
         cc.vv.MsgMgr.remove(cc.vv.Opcode.NEW_CIRCLE, this.OnPushNetCmd);
         cc.vv.MsgMgr.remove(cc.vv.Opcode.UPDATE_MONEY, this.OnPushNetCmd);
         cc.vv.MsgMgr.remove(cc.vv.Opcode.ACQUIREHOUSE, this.OnPushNetCmd);
+        cc.vv.MsgMgr.remove(cc.vv.Opcode.BATTLE_END, this.OnPushNetCmd);
+        cc.vv.MsgMgr.remove(cc.vv.Opcode.EVENT_EFFECT, this.OnPushNetCmd);
+        cc.vv.MsgMgr.remove(cc.vv.Opcode.ADD_TRIGGER, this.OnPushNetCmd);
+        cc.vv.MsgMgr.remove(cc.vv.Opcode.DEL_TRIGGER, this.OnPushNetCmd);
+        cc.vv.MsgMgr.remove(cc.vv.Opcode.AT_STATUS, this.OnPushNetCmd);
     },
 });

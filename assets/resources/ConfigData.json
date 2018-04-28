@@ -1,11 +1,30 @@
 {
  "lang": [], 
- "pet": [], 
  "global_var": [
   {
    "k": "BATTLE_OP_TIME", 
    "remark": "战斗内普通操作的时间（单位：秒），没有特殊说明的，都用这个时间", 
    "v": "30"
+  }, 
+  {
+   "k": "GOD_ALLOW_GRID", 
+   "remark": "触发器允许出现的地格（1=普通地块2=起点3=事件区域4=命运区域5=占卜屋6=卡牌商店）", 
+   "v": "1"
+  }, 
+  {
+   "k": "GOD_BEGIN_TURN", 
+   "remark": "神仙初始出现时间区间（单位：回合），从中随机一个时间", 
+   "v": "0,3"
+  }, 
+  {
+   "k": "GOD_LIMITED_NUM", 
+   "remark": "同时存在的最大神仙数", 
+   "v": "2"
+  }, 
+  {
+   "k": "GOD_REFRESH_TURN", 
+   "remark": "神仙刷新时间区间（单位：回合），从中随机一个时间", 
+   "v": "3,6"
   }, 
   {
    "k": "LIMITED_FOOD", 
@@ -95,9 +114,9 @@
    "grid_id": 5, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "55,56,57,58", 
+   "attach_grid_id": "55", 
    "id": 5, 
-   "grid_type": 0
+   "grid_type": 3
   }, 
   {
    "cost": 0, 
@@ -108,7 +127,7 @@
    "grid_id": 6, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "55,56,57,58", 
+   "attach_grid_id": "55", 
    "id": 6, 
    "grid_type": 0
   }, 
@@ -162,7 +181,7 @@
    "grid_name": "", 
    "attach_grid_id": "10", 
    "id": 10, 
-   "grid_type": 0
+   "grid_type": 7
   }, 
   {
    "cost": 39, 
@@ -212,7 +231,7 @@
    "grid_id": 14, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "65,66,67,68", 
+   "attach_grid_id": "65", 
    "id": 14, 
    "grid_type": 0
   }, 
@@ -225,7 +244,7 @@
    "grid_id": 15, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "100", 
+   "attach_grid_id": "95", 
    "id": 15, 
    "grid_type": 1
   }, 
@@ -238,7 +257,7 @@
    "grid_id": 16, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "89", 
+   "attach_grid_id": "92", 
    "id": 16, 
    "grid_type": 1
   }, 
@@ -251,7 +270,7 @@
    "grid_id": 17, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "99", 
+   "attach_grid_id": "96", 
    "id": 17, 
    "grid_type": 1
   }, 
@@ -264,7 +283,7 @@
    "grid_id": 18, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "90", 
+   "attach_grid_id": "93", 
    "id": 18, 
    "grid_type": 1
   }, 
@@ -277,7 +296,7 @@
    "grid_id": 19, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "95,96,97,98", 
+   "attach_grid_id": "97", 
    "id": 19, 
    "grid_type": 0
   }, 
@@ -290,7 +309,7 @@
    "grid_id": 20, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "95,96,97,98", 
+   "attach_grid_id": "97", 
    "id": 20, 
    "grid_type": 0
   }, 
@@ -303,7 +322,7 @@
    "grid_id": 21, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "91", 
+   "attach_grid_id": "94", 
    "id": 21, 
    "grid_type": 1
   }, 
@@ -316,7 +335,7 @@
    "grid_id": 22, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "92", 
+   "attach_grid_id": "98", 
    "id": 22, 
    "grid_type": 1
   }, 
@@ -329,7 +348,7 @@
    "grid_id": 23, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "93", 
+   "attach_grid_id": "99", 
    "id": 23, 
    "grid_type": 1
   }, 
@@ -342,7 +361,7 @@
    "grid_id": 24, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "94", 
+   "attach_grid_id": "100", 
    "id": 24, 
    "grid_type": 1
   }, 
@@ -355,7 +374,7 @@
    "grid_id": 25, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "65,66,67,68", 
+   "attach_grid_id": "65", 
    "id": 25, 
    "grid_type": 0
   }, 
@@ -409,7 +428,7 @@
    "grid_name": "", 
    "attach_grid_id": "29", 
    "id": 29, 
-   "grid_type": 0
+   "grid_type": 8
   }, 
   {
    "cost": 34, 
@@ -516,7 +535,7 @@
    "grid_type": 1
   }, 
   {
-   "cost": 0, 
+   "cost": 30, 
    "grid_group": 38, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -526,7 +545,7 @@
    "grid_name": "", 
    "attach_grid_id": "38", 
    "id": 38, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
    "cost": 0, 
@@ -537,7 +556,7 @@
    "grid_id": 39, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "39", 
+   "attach_grid_id": "80", 
    "id": 39, 
    "grid_type": 0
   }, 
@@ -550,12 +569,12 @@
    "grid_id": 40, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "40", 
+   "attach_grid_id": "80", 
    "id": 40, 
    "grid_type": 0
   }, 
   {
-   "cost": 0, 
+   "cost": 30, 
    "grid_group": 41, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -563,12 +582,12 @@
    "grid_id": 41, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "41", 
+   "attach_grid_id": "89", 
    "id": 41, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
+   "cost": 30, 
    "grid_group": 42, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -576,12 +595,12 @@
    "grid_id": 42, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "42", 
+   "attach_grid_id": "90", 
    "id": 42, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
+   "cost": 30, 
    "grid_group": 43, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -589,12 +608,12 @@
    "grid_id": 43, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "43", 
+   "attach_grid_id": "91", 
    "id": 43, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
+   "cost": 30, 
    "grid_group": 44, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -602,12 +621,12 @@
    "grid_id": 44, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "44", 
+   "attach_grid_id": "88", 
    "id": 44, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
+   "cost": 30, 
    "grid_group": 45, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -615,12 +634,12 @@
    "grid_id": 45, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "45", 
+   "attach_grid_id": "87", 
    "id": 45, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
-   "cost": 0, 
+   "cost": 30, 
    "grid_group": 46, 
    "pass_event_Id": 0, 
    "map_scene_id": 800001, 
@@ -628,9 +647,9 @@
    "grid_id": 46, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "46", 
+   "attach_grid_id": "81", 
    "id": 46, 
-   "grid_type": 0
+   "grid_type": 1
   }, 
   {
    "cost": 35, 
@@ -641,7 +660,7 @@
    "grid_id": 47, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "84", 
+   "attach_grid_id": "82", 
    "id": 47, 
    "grid_type": 1
   }, 
@@ -654,7 +673,7 @@
    "grid_id": 48, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "85", 
+   "attach_grid_id": "83", 
    "id": 48, 
    "grid_type": 1
   }, 
@@ -667,7 +686,7 @@
    "grid_id": 49, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "86", 
+   "attach_grid_id": "84", 
    "id": 49, 
    "grid_type": 1
   }, 
@@ -680,7 +699,7 @@
    "grid_id": 50, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "87", 
+   "attach_grid_id": "85", 
    "id": 50, 
    "grid_type": 1
   }, 
@@ -693,7 +712,7 @@
    "grid_id": 51, 
    "stop_event_Id": 0, 
    "grid_name": "", 
-   "attach_grid_id": "88", 
+   "attach_grid_id": "86", 
    "id": 51, 
    "grid_type": 1
   }
@@ -703,7 +722,7 @@
    "name": "领地", 
    "level": 0, 
    "lv_cost_times": 10000.0, 
-   "pass_cost_times": 2500.0, 
+   "pass_cost_times": 50000.0, 
    "need_circle": 0, 
    "is_landmark": 0, 
    "pic_id": 100000
@@ -712,7 +731,7 @@
    "name": "1级房屋", 
    "level": 1, 
    "lv_cost_times": 20000.0, 
-   "pass_cost_times": 5000.0, 
+   "pass_cost_times": 100000.0, 
    "need_circle": 1, 
    "is_landmark": 0, 
    "pic_id": 100001
@@ -721,7 +740,7 @@
    "name": "2级房屋", 
    "level": 2, 
    "lv_cost_times": 40000.0, 
-   "pass_cost_times": 10000.0, 
+   "pass_cost_times": 200000.0, 
    "need_circle": 2, 
    "is_landmark": 0, 
    "pic_id": 100002
@@ -730,7 +749,7 @@
    "name": "3级房屋", 
    "level": 3, 
    "lv_cost_times": 80000.0, 
-   "pass_cost_times": 20000.0, 
+   "pass_cost_times": 400000.0, 
    "need_circle": 3, 
    "is_landmark": 0, 
    "pic_id": 100003
@@ -739,10 +758,96 @@
    "name": "地标", 
    "level": 4, 
    "lv_cost_times": 120000.0, 
-   "pass_cost_times": 30000.0, 
+   "pass_cost_times": 600000.0, 
    "need_circle": 4, 
    "is_landmark": 1, 
    "pic_id": 100004
+  }
+ ], 
+ "trigger": [
+  {
+   "name": "大财神", 
+   "trigger_type": 1, 
+   "img_id": 0, 
+   "contact_type": 1, 
+   "event_1_id": 11, 
+   "occur_delay_type": 0, 
+   "intro": "增加10000金币，免购买土地和通行费", 
+   "event_3_id": 10, 
+   "is_transfer": 0, 
+   "delay_time": 0, 
+   "event_2_id": 0, 
+   "id": 1001
+  }, 
+  {
+   "name": "土地公", 
+   "trigger_type": 1, 
+   "img_id": 0, 
+   "contact_type": 1, 
+   "event_1_id": 0, 
+   "occur_delay_type": 0, 
+   "intro": "免费强占土地", 
+   "event_3_id": 13, 
+   "is_transfer": 0, 
+   "delay_time": 0, 
+   "event_2_id": 0, 
+   "id": 1002
+  }, 
+  {
+   "name": "狗", 
+   "trigger_type": 1, 
+   "img_id": 0, 
+   "contact_type": 1, 
+   "event_1_id": 15, 
+   "occur_delay_type": 0, 
+   "intro": "踩到者咬伤进入医院", 
+   "event_3_id": 0, 
+   "is_transfer": 0, 
+   "delay_time": 0, 
+   "event_2_id": 0, 
+   "id": 1003
+  }, 
+  {
+   "name": "路障", 
+   "trigger_type": 2, 
+   "img_id": 0, 
+   "contact_type": 3, 
+   "event_1_id": 12, 
+   "occur_delay_type": 0, 
+   "intro": "使途经者停下", 
+   "event_3_id": 0, 
+   "is_transfer": 0, 
+   "delay_time": 0, 
+   "event_2_id": 0, 
+   "id": 2001
+  }, 
+  {
+   "name": "地雷", 
+   "trigger_type": 2, 
+   "img_id": 0, 
+   "contact_type": 1, 
+   "event_1_id": 15, 
+   "occur_delay_type": 0, 
+   "intro": "踩到者炸伤进入医院", 
+   "event_3_id": 0, 
+   "is_transfer": 0, 
+   "delay_time": 0, 
+   "event_2_id": 0, 
+   "id": 2002
+  }, 
+  {
+   "name": "定时炸弹", 
+   "trigger_type": 2, 
+   "img_id": 0, 
+   "contact_type": 1, 
+   "event_1_id": 0, 
+   "occur_delay_type": 1, 
+   "intro": "踩到者随身5步后爆炸，炸伤进入医院。遇到他人时可转移", 
+   "event_3_id": 14, 
+   "is_transfer": 1, 
+   "delay_time": 5, 
+   "event_2_id": 0, 
+   "id": 2003
   }
  ], 
  "map_mode": [
@@ -752,103 +857,238 @@
    "map_id": 800001, 
    "win_condition": 0, 
    "map_scene_id": 800001, 
-   "start_wages": 300000, 
+   "start_wages": 2000000, 
    "mode": 1, 
    "map_name": "石器时代", 
    "mode_name": "1v1", 
-   "start_energy": 0
+   "start_energy": 5
   }
  ], 
  "event": [
   {
-   "is_transfer": 0, 
+   "prompt": "0", 
    "event_type": 10, 
-   "is_selected": 0, 
+   "is_selected": 1, 
    "event_id": 1, 
    "countinue_time": 1, 
-   "prompt": "", 
-   "occur_delay_type": 0, 
-   "countinue_time_type": 0, 
-   "base_type": 0, 
-   "base": 1, 
-   "img_id": 0, 
-   "delay_time": 0, 
-   "prompt_type": 0, 
    "times": 1, 
+   "countinue_time_type": 0, 
+   "base_type": 1, 
+   "base": 100, 
+   "img_id": 0, 
+   "prompt_type": 0, 
    "intro": "增加一个月工资", 
    "target": 10
   }, 
   {
-   "is_transfer": 0, 
+   "prompt": "0", 
    "event_type": 10, 
-   "is_selected": 0, 
+   "is_selected": 1, 
    "event_id": 2, 
    "countinue_time": 1, 
-   "prompt": "", 
-   "occur_delay_type": 0, 
-   "countinue_time_type": 0, 
-   "base_type": 0, 
-   "base": 2, 
-   "img_id": 0, 
-   "delay_time": 0, 
-   "prompt_type": 0, 
    "times": 1, 
+   "countinue_time_type": 0, 
+   "base_type": 1, 
+   "base": 200, 
+   "img_id": 0, 
+   "prompt_type": 0, 
    "intro": "增加2个月工资", 
    "target": 10
   }, 
   {
-   "is_transfer": 0, 
+   "prompt": "0", 
    "event_type": 5, 
-   "is_selected": 0, 
+   "is_selected": 1, 
    "event_id": 3, 
    "countinue_time": 1, 
-   "prompt": "0", 
-   "occur_delay_type": 0, 
+   "times": 1, 
    "countinue_time_type": 0, 
    "base_type": 0, 
    "base": 1, 
    "img_id": 0, 
-   "delay_time": 0, 
    "prompt_type": 0, 
-   "times": 1, 
    "intro": "增加土地1级", 
    "target": 1
   }, 
   {
-   "is_transfer": 0, 
+   "prompt": "0", 
    "event_type": 5, 
-   "is_selected": 0, 
+   "is_selected": 1, 
    "event_id": 4, 
    "countinue_time": 1, 
-   "prompt": "0", 
-   "occur_delay_type": 0, 
+   "times": 1, 
    "countinue_time_type": 0, 
    "base_type": 0, 
    "base": -1, 
    "img_id": 0, 
-   "delay_time": 0, 
    "prompt_type": 0, 
-   "times": 1, 
    "intro": "降低土地1级", 
    "target": 1
   }, 
   {
-   "is_transfer": 0, 
+   "prompt": "0", 
    "event_type": 9, 
-   "is_selected": 0, 
+   "is_selected": 1, 
    "event_id": 5, 
    "countinue_time": 3, 
-   "prompt": "0", 
-   "occur_delay_type": 0, 
+   "times": -1, 
    "countinue_time_type": 0, 
    "base_type": 0, 
    "base": 1, 
    "img_id": 0, 
-   "delay_time": 0, 
    "prompt_type": 0, 
-   "times": 1, 
    "intro": "每次只走一步", 
    "target": 1
+  }, 
+  {
+   "prompt": "0", 
+   "event_type": 11, 
+   "is_selected": 1, 
+   "event_id": 6, 
+   "countinue_time": 1, 
+   "times": 1, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 0, 
+   "img_id": 0, 
+   "prompt_type": 0, 
+   "intro": "将土地据为己有", 
+   "target": 1
+  }, 
+  {
+   "prompt": "0", 
+   "event_type": 15, 
+   "is_selected": 1, 
+   "event_id": 7, 
+   "countinue_time": 1, 
+   "times": 1, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 2001, 
+   "img_id": 0, 
+   "prompt_type": 0, 
+   "intro": "释放触发器——路障", 
+   "target": 1
+  }, 
+  {
+   "prompt": "0", 
+   "event_type": 12, 
+   "is_selected": 0, 
+   "event_id": 8, 
+   "countinue_time": 2, 
+   "times": -1, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 0, 
+   "img_id": 0, 
+   "prompt_type": 0, 
+   "intro": "进医院", 
+   "target": 2
+  }, 
+  {
+   "prompt": "0", 
+   "event_type": 6, 
+   "is_selected": 1, 
+   "event_id": 9, 
+   "countinue_time": 1, 
+   "times": 1, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 0, 
+   "img_id": 0, 
+   "prompt_type": 0, 
+   "intro": "将土地等级改为0", 
+   "target": 3
+  }, 
+  {
+   "prompt": "0", 
+   "event_type": 13, 
+   "is_selected": 1, 
+   "event_id": 10, 
+   "countinue_time": 5, 
+   "times": -1, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 3, 
+   "img_id": 0, 
+   "prompt_type": 0, 
+   "intro": "免费buff", 
+   "target": 10
+  }, 
+  {
+   "prompt": "0", 
+   "event_type": 1, 
+   "is_selected": 1, 
+   "event_id": 11, 
+   "countinue_time": 1, 
+   "times": 1, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 100000, 
+   "img_id": 0, 
+   "prompt_type": 0, 
+   "intro": "增加100000金币", 
+   "target": 10
+  }, 
+  {
+   "prompt": "0", 
+   "event_type": 14, 
+   "is_selected": 1, 
+   "event_id": 12, 
+   "countinue_time": 1, 
+   "times": -1, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 100000, 
+   "img_id": 0, 
+   "prompt_type": 0, 
+   "intro": "使途经者停下", 
+   "target": 10
+  }, 
+  {
+   "prompt": "0", 
+   "event_type": 11, 
+   "is_selected": 1, 
+   "event_id": 13, 
+   "countinue_time": 5, 
+   "times": -1, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 0, 
+   "img_id": 0, 
+   "prompt_type": 0, 
+   "intro": "土地公附身，免费强占土地，持续5回合", 
+   "target": 10
+  }, 
+  {
+   "prompt": "0", 
+   "event_type": 12, 
+   "is_selected": 0, 
+   "event_id": 14, 
+   "countinue_time": 2, 
+   "times": -1, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 0, 
+   "img_id": 0, 
+   "prompt_type": 0, 
+   "intro": "定时爆炸", 
+   "target": 10
+  }, 
+  {
+   "prompt": "0", 
+   "event_type": 12, 
+   "is_selected": 0, 
+   "event_id": 15, 
+   "countinue_time": 2, 
+   "times": -1, 
+   "countinue_time_type": 0, 
+   "base_type": 0, 
+   "base": 0, 
+   "img_id": 0, 
+   "prompt_type": 0, 
+   "intro": "地雷爆炸进医院", 
+   "target": 10
   }
  ], 
  "card": [
@@ -901,7 +1141,58 @@
    "event1": 5, 
    "event2": 0, 
    "id": 3, 
+   "target": 2
+  }, 
+  {
+   "charge": 1, 
+   "cost": 2, 
+   "name": "占地卡", 
+   "area": 1, 
+   "img_id": 0, 
+   "camp": 2, 
+   "area_var": 0, 
+   "event3": 0, 
+   "range": 0, 
+   "intro": "免费强占敌方某块土地", 
+   "performance": 0, 
+   "event1": 6, 
+   "event2": 0, 
+   "id": 4, 
    "target": 3
+  }, 
+  {
+   "charge": 1, 
+   "cost": 3, 
+   "name": "路障卡", 
+   "area": 1, 
+   "img_id": 0, 
+   "camp": 3, 
+   "area_var": 0, 
+   "event3": 0, 
+   "range": 0, 
+   "intro": "在指定土地上释放一个路障，途经者将强制停下", 
+   "performance": 0, 
+   "event1": 7, 
+   "event2": 0, 
+   "id": 5, 
+   "target": 4
+  }, 
+  {
+   "charge": 1, 
+   "cost": 5, 
+   "name": "核弹卡", 
+   "area": 5, 
+   "img_id": 0, 
+   "camp": 3, 
+   "area_var": 1, 
+   "event3": 0, 
+   "range": 6, 
+   "intro": "将指定范围内的人炸伤进医院2回合；土地将为0级土地", 
+   "performance": 0, 
+   "event1": 8, 
+   "event2": 9, 
+   "id": 6, 
+   "target": 4
   }
  ]
 }

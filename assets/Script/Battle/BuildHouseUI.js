@@ -86,7 +86,7 @@ cc.Class({
     },
 
     onButHouse: function() {
-        if(cc.vv.BattleData.getUserDataByUid(cc.vv.UserData.userId).circle >= this._selectItem._needCircle) {
+        if(cc.vv.BattleData.getDataByUid(cc.vv.UserData.userId).circle >= this._selectItem._needCircle) {
             cc.vv.SocketMgr.sendPackage(cc.vv.Opcode.BUYHOUSE, [this._selectItem._level]);
             if(this._selectItem._level == 0) {  //临时提示 需要服务器校验
                 cc.vv.Tooltip.show("你已购买当前地块,消耗金钱:" + this._selectItem._buildingExpense);

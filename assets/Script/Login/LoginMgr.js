@@ -29,6 +29,7 @@ var LoginMgr = cc.Class({
     onLoad () {
         //
         initMgr();
+        cc.game.setFrameRate(30);
         //监听网络
         cc.vv.MsgMgr.register(cc.vv.Opcode.CHECK_USER, this.OnGetServer, this);
         cc.vv.MsgMgr.register(cc.vv.Opcode.GET_SERVER, this.OnShowServerPanel, this);
@@ -47,19 +48,16 @@ var LoginMgr = cc.Class({
     //显示选服界面
     OnShowServerPanel(data) {
         //GM代码
-        var selectServerData = JSON.parse(cc.sys.localStorage.getItem('selectServerUrlData'));
+        var selectServerData = JSON.parse(cc.sys.localStorage.getItem('selectServerSwitchState'));
         var testAddr = null;
-        if(selectServerData) {
-            testAddr = selectServerData.selectServer;
-        }
-        cc.log("New_Addr: " + testAddr);
-        if(testAddr === null) {
-            cc.vv.HttpMgr.logicUrl = data.addr;
+        if(selectServerData !== null && selectServerData.isOpen) {
+            testAddr = cc.vv.HttpMgr.specialAddr;
         }
         else {
-            cc.vv.HttpMgr.logicUrl = testAddr;
+            testAddr = data.addr;
         }
 
+        cc.vv.HttpMgr.logicUrl = testAddr;
         // cc.vv.HttpMgr.logicUrl = data.addr;
         cc.vv.HttpMgr.sendLogicRequest(cc.vv.Opcode.LOGIN);
     },

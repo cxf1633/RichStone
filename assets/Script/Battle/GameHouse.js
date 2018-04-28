@@ -6,14 +6,9 @@ cc.Class({
         campFrameSprite: cc.Sprite,
         houseSprite: cc.Sprite,
         newHouseSprite: cc.Sprite,
-
-        _gridLvData: null, //grid_lv表数据
     },
 
     start () {
-        if(this._gridLvData === null) {
-            this._gridLvData = cc.vv.ConfigData.getConfigData("grid_lv");
-        }
     },
 
     get:function(name){
@@ -41,7 +36,7 @@ cc.Class({
             cc.loader.loadRes("Atlas/BuildHouseUIAtlas/BuildHouseUIAtlas", cc.SpriteAtlas, function (err, atlas) {
                 var _spriteName = "MapPiece_0";
                 if(value.lv >= 0) {
-                    _spriteName = "MapPiece_" + self._gridLvData[value.lv].pic_id;
+                    _spriteName = "MapPiece_" + cc.vv.ConfigData.grid_lv[value.lv].pic_id;
                 }
                 self.houseSprite.spriteFrame = atlas.getSpriteFrame(_spriteName);
             });
@@ -54,7 +49,7 @@ cc.Class({
 
         var self = this;
         cc.loader.loadRes("Atlas/BuildHouseUIAtlas/BuildHouseUIAtlas", cc.SpriteAtlas, function (err, atlas) {
-            var _testName = 'MapPiece_' + self._gridLvData[value.lv].pic_id;
+            var _testName = 'MapPiece_' + cc.vv.ConfigData.grid_lv[value.lv].pic_id;
             var frame = atlas.getSpriteFrame(_testName);
             self.newHouseSprite.spriteFrame = frame;
 

@@ -19,8 +19,7 @@ var MathEx = {
     //获取金钱格式(返回字符串)
     getMoneyFormat(_number) {
         var _newString = _number;
-        var _tempNumber = _number / 10000;
-        cc.log(_tempNumber);
+        var _tempNumber = Math.floor(_number / 10000);
         if(_tempNumber >= 10) {
             _newString = _tempNumber + "万";
         }

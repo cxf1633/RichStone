@@ -6,7 +6,7 @@ var BaseCompont = cc.Class({
     get(name){
         //cc.log("BaseCompont get:", name);
         var ret = this[name];
-        if(!ret){
+        if(ret == null){
             cc.log("找不到属性：", name);
         }
         return ret;
@@ -22,7 +22,7 @@ var BaseCompont = cc.Class({
 
     runActionBySpeed(action){
         var speed = 1//cc.vv.BattleData.battleSpeed;
-        cc.log("BaseCompont runActionBySpeed speed =", speed);
+        //cc.log("BaseCompont runActionBySpeed speed =", speed);
         var act =  cc.speed(action, speed);
         this.node.runAction(act);
     },

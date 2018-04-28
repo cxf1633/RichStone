@@ -21,36 +21,49 @@ var BattleData = cc.Class({
         this.roundId = info.turn;
         this.loser = info.loser;
         this.status = info.status;
-        this.playerList = info.members;
+        this.playerDatas = {};
+        for (const iterator of info.members) {
+            //cc.log(iterator);
+            this.playerDatas[iterator.uid] = iterator;
+        }
         this.lands = info.lands;
+        this.triggers = info.triggers;
     },
     getData(name){
-        return this[name];
+        var ret = this[name];
+        if(ret == null){
+            cc.log("找不到属性：", name);
+        }
+        return ret;
     },
     setData(name, value){
         this[name] = value;
     },
-    getUserDataByUid(uid){
-        if(!this.playerList){
-            cc.log("this.playerList is null!");
-            return;
+    modifyData(name, value){
+        this[name] = this[name] + value;
+	    return this[name];
+    },
+    getDataByUid(uid){
+        var playerData = this.playerDatas[uid];
+        if (playerData == null) {
+            cc.log("getDataByUid 没有找到用户数据 uid=", uid);
         }
-        for(var v of this.playerList){
-            if(v.uid == uid){
-                return v;
-            }
-        }
-        cc.log("no find uid:", uid);
+        return playerData;
     },
 
-    setUserDataByUid(uid, changeDataName, value) {
-        if(this.playerList) {
-            for (var v of this.playerList) {
-                if(v.uid == uid){
-                    v[changeDataName] = value;
-                }
-            }
+    //undefined 、null、0 三种类型
+    setDataByUid(uid, name, value) {
+        var playerData = this.playerDatas[uid];
+        if (playerData == null) {//可以排除undefined和null
+            cc.log("setDataByUid 没有找到用户数据 uid=", uid);
+            return;
         }
+        var data = playerData[name];
+        if (data == null) {
+            cc.log("没有找到属性数据 name=", name);
+            return;
+        }
+        this.playerDatas[uid][name] = value;
     },
 
     getlandState(mapId) {

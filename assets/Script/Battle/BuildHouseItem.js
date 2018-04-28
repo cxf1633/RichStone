@@ -1,3 +1,4 @@
+var MathEx = require("MathEx");
 cc.Class({
     extends: cc.Component,
 
@@ -55,6 +56,8 @@ cc.Class({
         _level: null,
         _buildingExpense: null,
         _needCircle: null,
+
+        _isCanSelect: false,
     },
 
     init(_owner) {
@@ -72,21 +75,23 @@ cc.Class({
         });
 
         this.houseTypeNameLabel.string = _data.name;
-        this.costLabel.string = _data.pass_cost_times * _landsData.cost;
+        this.costLabel.string = MathEx.getMoneyFormat(_data.pass_cost_times * _landsData.cost);
         this._buildingExpense = _data.lv_cost_times * _landsData.cost;
-        this.buildingExpenseLabel.string = this._buildingExpense;
+        this.buildingExpenseLabel.string = MathEx.getMoneyFormat(this._buildingExpense);
         this._needCircle = _data.need_circle;
         this.conditionLabel.string = this._needCircle + "圈后可购买";
 
-        var _playerData = cc.vv.BattleData.getUserDataByUid(cc.vv.UserData.userId);
+        var _playerData = cc.vv.BattleData.getDataByUid(cc.vv.UserData.userId);
 
         if(_playerData.circle >= this._needCircle) {
             if(this._needCircle > cc.vv.BattleData.getlandState(_landsData.attach_grid_id).lv) {
                 this.buildingExpenseNode.active = true;
                 this.conditionLabel.node.active = false;
                 this.haveBoughtLabel.node.active = false;
+                cc.log(_playerData.money + "    " + this._buildingExpense)
                 if(_playerData.money >= this._buildingExpense) {
                     this.buildingExpenseLabel.node.color = new cc.Color(0, 0, 0);
+                    this._isCanSelect = true;
                     this.onSelectHouseType();
                 }
                 else {
@@ -108,7 +113,7 @@ cc.Class({
     },
 
     onSelectHouseType() {
-        if(this.buildingExpenseNode.active) {
+        if(this._isCanSelect) {
             this.owner.onSelectHouseItem(this);
         }
     },
